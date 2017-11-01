@@ -160,6 +160,9 @@
 
     <script >
 
+      // var serverAddress = 'http://146.193.41.153:8092/'
+var serverAddress = 'http://localhost:8092/'
+
       function sendMessage(name){
         var data = null;
 
@@ -177,9 +180,9 @@
         //http://146.193.41.153:8092/verify?claim=veryfake&article=jn_99
         var claim = name
         var article_url = window.location.href
-        var serverAddress = "http://turbina.gsd.inesc-id.pt:8092"
+        //var serverAddress = "http://turbina.gsd.inesc-id.pt:8092"
 
-        var request = serverAddress+"/verify?claim="+claim+"&article="+article_url
+        var request = serverAddress+"verify?claim="+claim+"&article="+article_url
 
         console.log("REQUEST::::::     "+request)
 
