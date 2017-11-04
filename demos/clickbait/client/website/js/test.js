@@ -10,17 +10,19 @@
 
 /*
 # ID's
-hashId = newsTitle.Sha256.hash()
+articleId = newsTitle.Sha256.hash()
 
 *Buttons*
-button- 		hashId
-div-button - 	hashId
+button-     articleId
+div-button -  articleId
 
 *Modals*
-modal- 			hashId
-modal-claim-body- hashId
+modal-      articleId
+modal-claim-body- articleId
 
 */
+
+var serverAddress = 'http://localhost:8092/'
 
 function titles () {
   console.log('Test file')
@@ -34,27 +36,29 @@ function titles () {
   }
 }
 
-function createButton (hash, parent) {
+function createButton (articleId, parent) {
   var buttonDiv = document.createElement('div')
-  var buttonId = 'button-' + hash
+  var buttonId = 'button-' + articleId
   var divId = 'div-' + buttonId
 
-  	buttonDiv.id = divId
-  	buttonDiv.class = 'col-lg-2'
-  	parent.appendChild(buttonDiv)
+  var articleIdS = 'clickClaims("' + articleId + '")'
 
-  	var html = "<button type='button' class='btn btn-info btn-lg homepage-news-claimsViewer-button' onclick='clickClaims()' data-toggle='modal' data-target='" + '#modal-' + hash + "'>View reviews <span id='span-" + buttonId + "' class='badge clickbaitnotification homepage-news-claimsCounter-badge'></span></button>"
-  	console.log(html)
-  	document.getElementById(divId).innerHTML = html
+  buttonDiv.id = divId
+  buttonDiv.class = 'col-lg-2'
+  parent.appendChild(buttonDiv)
+
+  var html = "<button type='button' class='btn btn-info btn-lg homepage-news-claimsViewer-button' onclick=" + articleIdS + " data-toggle='modal' data-target= #modal-" + articleId + ">View reviews <span id='span-" + buttonId + "' class='badge clickbaitnotification homepage-news-claimsCounter-badge'></span></button>"
+  console.log('butttoooooon: ' + html)
+  document.getElementById(divId).innerHTML = html
 }
 
-function createModals (hash, title) {
+function createModals (articleId, title) {
   var modalDiv = document.createElement('div')
-  var modalId = 'modal-' + hash
+  var modalId = 'modal-' + articleId
   modalDiv.id = modalId
   modalDiv.setAttribute('class', 'modal fade clickbaitclaims')
   modalDiv.setAttribute('role', 'dialog')
-  var claimBodyId = 'modal-claim-body-' + hash
+  var claimBodyId = 'modal-claim-body-' + articleId
 
   var html = ''
   html += "  <div class='modal-dialog'>"
@@ -80,15 +84,40 @@ function createModals (hash, title) {
   document.body.appendChild(modalDiv)
 }
 
+function setBadgeCount (articleId) {
+  var data = null
+  var xhr = new XMLHttpRequest()
+  xhr.withCredentials = false
+  var badgeId = 'span-button-' + articleId
+
+  xhr.addEventListener('readystatechange', function () {
+    if (this.readyState === 4) {
+      var number = this.response.toString()
+      console.log('Server response:    ' + number)
+      document.getElementById(badgeId).innerHTML = number
+    }
+  })
+  var request = serverAddress + 'getcount?article=' + articleId
+
+  xhr.open('GET', request)
+  xhr.setRequestHeader('content-type', 'application/javascript')
+  xhr.send(data)
+}
+
 function allElements () {
   var list = document.getElementsByClassName('homepage-news-element')
 
   for (var i = 0; i < list.length; i++) {
-  	var	title = list[i].getElementsByClassName('homepage-news-title')[0].innerText
-  	var strippedTitle = title.replace(/\W/g, '').toLowerCase()
-  	var hashId = Sha256.hash(strippedTitle)
-  	createButton(hashId, list[i])
-  	createModals(hashId, title)
+    var title = list[i].getElementsByClassName('homepage-news-title')[0].innerText
+    var strippedTitle = title.replace(/\W/g, '').toLowerCase()
+    var articleId = Sha256.hash(strippedTitle)
+
+    // Buttons
+    createButton(articleId, list[i])
+    // Modal
+    createModals(articleId, title)
+    // Badges
+    setBadgeCount(articleId)
   }
 }
 

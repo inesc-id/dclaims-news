@@ -3,9 +3,10 @@ console.log('Helloooo')
 // var serverAddress = 'http://146.193.41.153:8092/'
 var serverAddress = 'http://localhost:8092/'
 
-function clickClaims () {
+function clickClaims (articleId) {
   console.log('Opened claims')
-  document.getElementById('claim-post-body').innerHTML = "There are no claims about this article's title yet. Open the article and be the first!"
+  var claimBodyId = 'modal-claim-body-' + articleId
+  document.getElementById(claimBodyId).innerHTML = "There are no claims about this article's title yet. Open the article and be the first!"
 
 // http://146.193.41.153:8092/getclaims?article=http://turbina.gsd.inesc-id.pt:8095/post.html
 
@@ -33,11 +34,11 @@ function clickClaims () {
                 // txt+='</div>'
       }
       txt += '</div>'
-      document.getElementById('claim-post-body').innerHTML = txt
+      document.getElementById(claimBodyId).innerHTML = txt
     }
   })
 
-  var request = serverAddress + 'getclaims?article=' + serverAddress + 'post.html'
+  var request = serverAddress + 'getclaims?article=' + articleId
 
   console.log('RESQUESTING:  \n' + request)
 
@@ -45,7 +46,7 @@ function clickClaims () {
   xhr.setRequestHeader('content-type', 'application/javascript')
   xhr.send(data)
 }
-
+/*
 function setBadgeCount (badgeId) {
   var data = null
   var xhr = new XMLHttpRequest()
@@ -74,4 +75,6 @@ function setAllBadges () {
   }
 }
 
-setAllBadges()
+// setAllBadges()
+
+*/
