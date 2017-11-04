@@ -1,6 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<!-- 
+Classes:
+homepage-news-frontpage
+homepage-news-element
+homepage-news-title
+homepage-news-outlet
+homepage-news-claimsCounter-badge
+homepage-news-claimsViewer-button
+
+newspage-newsTitle
+newspage-newsBody
+newspage-claimsGenerator-button
+-->
+
 <head>
 
   <meta charset="utf-8">
@@ -60,36 +74,49 @@
 
 <!-- Main Content -->
 <div class="container">
-  <div class="row">
+  <div class="row homepage-news-frontpage">
     <div class="col-lg-8 col-md-10 mx-auto">
 
-      <div class = row>
+      <div class = "row homepage-news-element" >
         <div class="col-lg-8 col-md-10 mx-auto">
         <div class="post-preview">
           <a href="post.html">
-            <h2 class="post-title">
+            <h2 class="post-title homepage-news-title">
               Ryanair bans holdalls and small suitcases in cabins
             </h2>
-            <h3 class="post-subtitle">
-              unless you pay £10
-            </h3>
           </a>
 
-          <p class="post-meta">Posted by
+          <p class="post-meta homepage-news-outlet">Posted by
             <a href="http://www.telegraph.co.uk/travel/news/ryanair-cuts-carry-on-luggage-allowance/">The Telegraph</a>
             on September 24, 2017</p>
         </div>
         </div>
+        <!--
         <div class="col-lg-2">
-          <button type="button" class="btn btn-info btn-lg" onclick="clickClaims()" data-toggle="modal" data-target="#claim-post">View reviews <span id="badge_http://turbina.gsd.inesc-id.pt:8095/post.html" class="badge clickbaitnotification"></span></button>
+          <button type="button" class="btn btn-info btn-lg homepage-news-claimsViewer-button" onclick="clickClaims()" data-toggle="modal" data-target="#claim-post">View reviews <span id="badge_http://localhost:8095/post.html" class="badge clickbaitnotification homepage-news-claimsCounter-badge"></span></button>
         </div>
+      -->
+      </div>
+      <div class = "row homepage-news-element">
+        <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="post-preview">
+          <a href="post2.html">
+            <h2 class="post-title homepage-news-title">
+              Michael Fallon resigned after allegedly telling Andrea Leadsom: ‘Cold hands? I know where you can put them’
+            </h2>
+          </a>
+          <p class="post-meta homepage-news-outlet">Posted by
+            <a href="http://www.telegraph.co.uk/travel/news/ryanair-cuts-carry-on-luggage-allowance/">The Sun</a>
+            on September 24, 2017</p>
+        </div>
+        </div>
+        <!--
+        <div class="col-lg-2">
+          <button type='button' class='btn btn-info btn-lg homepage-news-claimsViewer-button' onclick='clickClaims()' data-toggle='modal' data-target='#claim-post'>View reviews <span id='badge_http://localhost:8095/post2.html' class='badge clickbaitnotification homepage-news-claimsCounter-badge'></span></button>
+        </div>
+      -->
       </div>
       <hr>
-
-      <!-- Pager -->
-      <div class="clearfix" hidden="true">
-        <a class="btn btn-secondary float-right" href="#">Older Posts &rarr;</a>
-      </div>
     </div>
   </div>
 </div>
@@ -134,7 +161,7 @@
 </footer>
 
 <!-- Modal -->
-<div id="claim-post" class="modal fade clickbaitclaims" role="dialog">
+<div id="modal-f65bded9dff8a564d4d0e601f76c206334962dc0072555ed811c6b3f1bebb2e" class="modal fade clickbaitclaims" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -162,6 +189,10 @@
 <!-- Custom scripts for this template -->
 <script src="js/clean-blog.min.js"></script>
 <script src="js/indexscript.js"></script>
+<script src="js/sha256.js"></script>
+<script src="js/test.js"></script>
+
+
 
 </body>
 

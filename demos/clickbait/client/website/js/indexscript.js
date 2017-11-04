@@ -7,7 +7,7 @@ function clickClaims () {
   console.log('Opened claims')
   document.getElementById('claim-post-body').innerHTML = "There are no claims about this article's title yet. Open the article and be the first!"
 
-    // http://146.193.41.153:8092/getclaims?article=http://turbina.gsd.inesc-id.pt:8095/post.html
+// http://146.193.41.153:8092/getclaims?article=http://turbina.gsd.inesc-id.pt:8095/post.html
 
   var data = null
   var xhr = new XMLHttpRequest()
@@ -17,7 +17,7 @@ function clickClaims () {
     if (this.readyState === 4) {
       var claims = JSON.parse(this.response)
 
-      cleanList = claims['claimsList'][1]
+      var cleanList = claims['claimsList'][1]
       console.log(cleanList.length)
 
       var txt = '<div class="container">'
@@ -37,7 +37,9 @@ function clickClaims () {
     }
   })
 
-  var request = serverAddress + 'getclaims?article=' + 'http://turbina.gsd.inesc-id.pt:8095/' + 'post.html'
+  var request = serverAddress + 'getclaims?article=' + serverAddress + 'post.html'
+
+  console.log('RESQUESTING:  \n' + request)
 
   xhr.open('GET', request)
   xhr.setRequestHeader('content-type', 'application/javascript')
