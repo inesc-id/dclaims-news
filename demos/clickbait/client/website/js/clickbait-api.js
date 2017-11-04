@@ -16,10 +16,13 @@ function sendMessage (name) {
 // application/javascript
         // http://146.193.41.153:8092/verify?claim=veryfake&article=jn_99
   var claim = name
-  var article_url = window.location.href
+  // var article_url = window.location.href
   // var serverAddress = "http://turbina.gsd.inesc-id.pt:8092"
+  var title = document.getElementsByClassName('post-heading')[0].getElementsByTagName('h1')[0].innerHTML
+  var strippedTitle = title.replace(/\W/g, '').toLowerCase()
+  var articleId = Sha256.hash(strippedTitle)
 
-  var request = serverAddress + 'verify?claim=' + claim + '&article=' + article_url
+  var request = serverAddress + 'verify?claim=' + claim + '&article=' + articleId
 
   console.log('REQUEST::::::     ' + request)
 
