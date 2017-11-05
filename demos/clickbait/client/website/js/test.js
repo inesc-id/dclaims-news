@@ -36,7 +36,7 @@ function titles () {
   }
 }
 
-function createButton (articleId, parent) {
+function createViewClaimsButton (articleId, parent) {
   var buttonDiv = document.createElement('div')
   var buttonId = 'button-' + articleId
   var divId = 'div-' + buttonId
@@ -52,7 +52,7 @@ function createButton (articleId, parent) {
   document.getElementById(divId).innerHTML = html
 }
 
-function createModals (articleId, title) {
+function createViewClaimsModals (articleId, title) {
   var modalDiv = document.createElement('div')
   var modalId = 'modal-' + articleId
   modalDiv.id = modalId
@@ -113,9 +113,9 @@ function allElements () {
     var articleId = Sha256.hash(strippedTitle)
 
     // Buttons
-    createButton(articleId, list[i])
+    createViewClaimsButton(articleId, list[i])
     // Modal
-    createModals(articleId, title)
+    createViewClaimsModals(articleId, title)
     // Badges
     setBadgeCount(articleId)
   }
