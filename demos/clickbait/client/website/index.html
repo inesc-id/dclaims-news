@@ -1,6 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<!-- 
+Classes:
+homepage-news-frontpage
+homepage-news-element
+homepage-news-title
+homepage-news-outlet
+homepage-news-claimsCounter-badge
+homepage-news-claimsViewer-button
+
+newspage-newsTitle
+newspage-newsBody
+newspage-claimsGenerator-button
+-->
+
 <head>
 
   <meta charset="utf-8">
@@ -60,36 +74,43 @@
 
 <!-- Main Content -->
 <div class="container">
-  <div class="row">
+  <div class="row homepage-news-frontpage">
     <div class="col-lg-8 col-md-10 mx-auto">
 
-      <div class = row>
+      <!-- homepage-news-element -->
+      <div class = "row homepage-news-element" >
         <div class="col-lg-8 col-md-10 mx-auto">
         <div class="post-preview">
           <a href="post.html">
-            <h2 class="post-title">
+
+            <!-- homepage-news-title -->
+            <h2 class="post-title homepage-news-title">
               Ryanair bans holdalls and small suitcases in cabins
             </h2>
-            <h3 class="post-subtitle">
-              unless you pay £10
-            </h3>
           </a>
 
-          <p class="post-meta">Posted by
+          <!-- homepage-news-outlet -->
+          <p class="post-meta homepage-news-outlet">Posted by
             <a href="http://www.telegraph.co.uk/travel/news/ryanair-cuts-carry-on-luggage-allowance/">The Telegraph</a>
             on September 24, 2017</p>
         </div>
         </div>
-        <div class="col-lg-2">
-          <button type="button" class="btn btn-info btn-lg" onclick="clickClaims()" data-toggle="modal" data-target="#claim-post">View reviews <span id="badge_http://turbina.gsd.inesc-id.pt:8095/post.html" class="badge clickbaitnotification"></span></button>
+      </div>
+      <div class = "row homepage-news-element">
+        <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="post-preview">
+          <a href="post2.html">
+            <h2 class="post-title homepage-news-title">
+              Michael Fallon resigned after allegedly telling Andrea Leadsom: ‘Cold hands? I know where you can put them’
+            </h2>
+          </a>
+          <p class="post-meta homepage-news-outlet">Posted by
+            <a href="http://www.telegraph.co.uk/travel/news/ryanair-cuts-carry-on-luggage-allowance/">The Sun</a>
+            on September 24, 2017</p>
+        </div>
         </div>
       </div>
       <hr>
-
-      <!-- Pager -->
-      <div class="clearfix" hidden="true">
-        <a class="btn btn-secondary float-right" href="#">Older Posts &rarr;</a>
-      </div>
     </div>
   </div>
 </div>
@@ -133,35 +154,19 @@
   </div>
 </footer>
 
-<!-- Modal -->
-<div id="claim-post" class="modal fade clickbaitclaims" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Ryanair bans holdalls and small suitcases in cabins</h4>
-      </div>
-      <div class="modal-body" id="claim-post-body">
-        <p>The title induces the reader in error</p>
-        <p> Science cuts two ways, of course; Clearly suggests there is another way</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-
-  </div>
-</div>
-
 <!-- Bootstrap core JavaScript -->
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <!-- Custom scripts for this template -->
 <script src="js/clean-blog.min.js"></script>
-<script src="js/indexscript.js"></script>
+<script src="js_hypercerts/sha256.js"></script>
+<script src="js_hypercerts/homepageScript.js"></script>
+
+<!--
+<script src="js/test.js"></script>
+-->
+
 
 </body>
 

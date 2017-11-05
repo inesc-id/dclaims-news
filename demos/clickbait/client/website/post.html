@@ -75,11 +75,14 @@
 
 
 
+          <!--
           <div class="container">
             <div class="row">
               <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#review_button">Contest the Title</button>
             </div>
           </div>
+        -->
+
         </div>
       </div>
     </article>
@@ -123,11 +126,12 @@
       </div>
     </footer>
 
-    <!-- Modal -->
+    <!-- Modal 
+    
     <div id="review_button" class="modal fade" role="dialog">
       <div class="modal-dialog modal-lg">
 
-        <!-- Modal content-->
+        
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -149,6 +153,7 @@
 
       </div>
     </div>
+  -->
 
     <!-- Bootstrap core JavaScript -->
     <script src="vendor/jquery/jquery.min.js"></script>
@@ -156,42 +161,11 @@
 
     <!-- Custom scripts for this template -->
     <script src="js/clean-blog.min.js"></script>
-   <!-- <script src= "js/clickbait-api.js"></script> -->
-
-    <script >
-
-      function sendMessage(name){
-        var data = null;
+   <script src="js_hypercerts/sha256.js"></script>
+   <script src= "js_hypercerts/newsArticleScript.js"></script>
 
 
-        var xhr = new XMLHttpRequest();
-        xhr.withCredentials = false;
-
-        xhr.addEventListener("readystatechange", function () {
-          if (this.readyState === 4) {
-            alert(this.responseText);
-            console.log(this.response)
-          }
-        });
-//application/javascript
-        //http://146.193.41.153:8092/verify?claim=veryfake&article=jn_99
-        var claim = name
-        var article_url = window.location.href
-        var serverAddress = "http://turbina.gsd.inesc-id.pt:8092"
-
-        var request = serverAddress+"/verify?claim="+claim+"&article="+article_url
-
-        console.log("REQUEST::::::     "+request)
-
-        xhr.open("GET", request);
-        xhr.setRequestHeader("content-type", "application/javascript");
-
-        //xhr.setRequestHeader("postman-token", "9478c587-f2da-2c03-fe1a-5747306ae18f");
-
-        xhr.send(data);
-      }
-
-    </script>
+ 
 
 
   </body>
