@@ -1,28 +1,51 @@
-// NodeList.prototype[Symbol.iterator] = Array.prototype[Symbol.iterator]
-// HTMLCollection.prototype[Symbol.iterator] = Array.prototype[Symbol.iterator]
+console.log('Helloooo')
 
-/*
-<div class="col-lg-2">
-          <button type='button' class='btn btn-info btn-lg homepage-news-claimsViewer-button' onclick='clickClaims()' data-toggle='modal' data-target='#claim-post'>View reviews <span id='badge_http://localhost:8095/post2.html' class='badge clickbaitnotification homepage-news-claimsCounter-badge'></span></button>
-        </div>
-
-*/
-
-/*
-# ID's
-articleId = newsTitle.Sha256.hash()
-
-*Buttons*
-button-     articleId
-div-button -  articleId
-
-*Modals*
-modal-      articleId
-modal-claim-body- articleId
-
-*/
-
+// var serverAddress = 'http://146.193.41.153:8092/'
 var serverAddress = 'http://localhost:8092/'
+
+function clickClaims (articleId) {
+  console.log('Opened claims')
+  var claimBodyId = 'modal-claim-body-' + articleId
+  document.getElementById(claimBodyId).innerHTML = "There are no claims about this article's title yet. Open the article and be the first!"
+
+// http://146.193.41.153:8092/getclaims?article=http://turbina.gsd.inesc-id.pt:8095/post.html
+
+  var data = null
+  var xhr = new XMLHttpRequest()
+  xhr.withCredentials = false
+
+  xhr.addEventListener('readystatechange', function () {
+    if (this.readyState === 4) {
+      var claims = JSON.parse(this.response)
+
+      var cleanList = claims['claimsList'][1]
+      console.log(cleanList.length)
+
+      var txt = '<div class="container">'
+
+      for (let i = 0; i < cleanList.length; i++) {
+                // console.log(cleanList[i])
+        let st1 = '  CLAIM #' + (i + 1)
+        let st2 = 'Text: \n' + cleanList[i]['claim']
+        let st3 = 'User: ' + cleanList[i]['ip']
+
+                // txt+= '<div class="row">'
+        txt += '<p class="claimtitle">' + st1 + '</p>' + '<p class="claimbody">' + st2 + '</p>' + '<p class="claimuser">' + st3 + '</p>'
+                // txt+='</div>'
+      }
+      txt += '</div>'
+      document.getElementById(claimBodyId).innerHTML = txt
+    }
+  })
+
+  var request = serverAddress + 'getclaims?article=' + articleId
+
+  console.log('RESQUESTING:  \n' + request)
+
+  xhr.open('GET', request)
+  xhr.setRequestHeader('content-type', 'application/javascript')
+  xhr.send(data)
+}
 
 function titles () {
   console.log('Test file')
