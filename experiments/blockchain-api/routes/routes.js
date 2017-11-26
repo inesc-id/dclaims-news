@@ -33,7 +33,7 @@ var appRouter = function (app) {
   	var req_article = req.query.article
   	var req_link = req.query.link
   	storeItem(req_article, req_link).then(value => {
-  		res.send('yey')
+  		res.send(value.toString())
   	}).catch((err) => {
     console.log(err)
   })
@@ -45,7 +45,9 @@ var appRouter = function (app) {
   	getItemFromStorage(req_article.toString()).then(value => {
   		console.log('value ' + value)
   		res.send(value)
-  	})
+  	}).catch((err) => {
+    console.log(err)
+  })
   })
 }
 module.exports = appRouter
