@@ -30,24 +30,27 @@ function getItemFromStorage (key) {
 
 var appRouter = function (app) {
   app.get('/update', function (req, res) {
-  	var req_article = req.query.article
-  	var req_link = req.query.link
-  	storeItem(req_article, req_link).then(value => {
-  		res.send(value.toString())
-  	}).catch((err) => {
-    console.log(err)
-  })
+    console.log('GOT STUFF')
+    var req_article = req.query.article
+    var req_link = req.query.link
+    storeItem(req_article, req_link).then(value => {
+      let restext = JSON.stringify(value)
+      console.log('Sending...' + restext)
+      res.end(restext)
+    }).catch((err) => {
+      console.log(err)
+    })
   })
 
   app.get('/getlink', function (req, res) {
-  	var req_article = req.query.article
+    var req_article = req.query.article
 
-  	getItemFromStorage(req_article.toString()).then(value => {
-  		console.log('value ' + value)
-  		res.send(value)
-  	}).catch((err) => {
-    console.log(err)
-  })
+    getItemFromStorage(req_article.toString()).then(value => {
+      console.log('value ' + value)
+      res.send(value)
+    }).catch((err) => {
+      console.log(err)
+    })
   })
 }
 module.exports = appRouter

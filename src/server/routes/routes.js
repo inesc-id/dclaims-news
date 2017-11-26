@@ -96,33 +96,3 @@ var appRouter = function (app) {
   })
 }
 module.exports = appRouter
-
-/*
-function storeItem (key, item) {
-  return new Promise(function (fulfill, reject) {
-    storage.init().then(function () {
-      storage.setItem(key, item).then(function (value) {
-        if (value) {
-          fulfill([key, value])
-        } else {
-          fulfill(null)
-        }
-      })
-    })
-  })
-}
-
-function getItemFromStorage (key) {
-  return new Promise(function (fulfill, reject) {
-    storage.init().then(function () {
-      storage.getItem(key).then(function (value) {
-        if (value) {
-          fulfill([key, value])
-        } else {
-          fulfill(null)
-        }
-      })
-    })
-  })
-}
-*/
