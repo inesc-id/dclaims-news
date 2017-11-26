@@ -1,9 +1,12 @@
 var Promise = require('promise')
 var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest
 
-const serverAddress = 'http://localhost:8088/'
+// const serverAddress = 'http://localhost:8088/'
+const serverAddress = 'http://146.193.41.153:8088/'
 
-function storeItem (key, item) {
+var exports = module.exports = {}
+
+exports.storeItem = function (key, item) {
   return new Promise(function (resolve, reject) {
     var data = null
     var xhr = new XMLHttpRequest()
@@ -19,15 +22,15 @@ function storeItem (key, item) {
 
     var request = serverAddress + 'update?article=' + key + '&&link=' + item
 
-	    console.log('RESQUESTING:  \n' + request)
+    console.log('RESQUESTING:  \n' + request)
 
-	    xhr.open('GET', request)
-	    xhr.setRequestHeader('content-type', 'application/javascript')
-	    xhr.send(data)
+    xhr.open('GET', request)
+    xhr.setRequestHeader('content-type', 'application/javascript')
+    xhr.send(data)
   })
 }
 
-function getItemFromStorage (key) {
+exports.getItemFromStorage = function (key) {
   return new Promise(function (resolve, reject) {
     var data = null
     var xhr = new XMLHttpRequest()
@@ -43,18 +46,10 @@ function getItemFromStorage (key) {
 
     var request = serverAddress + 'getlink?article=' + key
 
-	    console.log('RESQUESTING:  \n' + request)
+    console.log('RESQUESTING:  \n' + request)
 
-	    xhr.open('GET', request)
-	    xhr.setRequestHeader('content-type', 'application/javascript')
-	    xhr.send(data)
+    xhr.open('GET', request)
+    xhr.setRequestHeader('content-type', 'application/javascript')
+    xhr.send(data)
   })
 }
-
-/* storeItem('asd', 'das').then(console.log).catch((err) => {
-  console.log(err)
-})
-*/
-getItemFromStorage('asd').then(console.log).catch((err) => {
-  console.log(err)
-})

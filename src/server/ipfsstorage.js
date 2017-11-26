@@ -7,6 +7,7 @@ var uniqueFilename = require('unique-filename')
 
 var fs = require('fs')
 var storage = require('node-persist')
+var blockchainAPI = require('./blockchainAPI.js')
 
 var exports = module.exports = {}
 
@@ -15,6 +16,31 @@ var ipfs = ipfsAPI('localhost', '5001', {protocol: 'http'})
 var claimsListPath = 'claims/'
 var claimsListFileName = 'claimsList.json'
 
+function storeItem (key, item) {
+  return new Promise(function (fulfill, reject) {
+    blockchainAPI.storeItem(key, item).then(function (value) {
+      if (value) {
+        fulfill([key, value])
+      } else {
+        fulfill(null)
+      }
+    })
+  })
+}
+
+function getItemFromStorage (key) {
+  return new Promise(function (fulfill, reject) {
+    blockchainAPI.getItemFromStorage(key).then(function (value) {
+      if (value) {
+        fulfill(value)
+      } else {
+        fulfill(null)
+      }
+    })
+  })
+}
+
+/*
 function storeItem (key, item) {
   return new Promise(function (fulfill, reject) {
     storage.init().then(function () {
@@ -42,7 +68,7 @@ function getItemFromStorage (key) {
     })
   })
 }
-
+*/
 function updateRegistry (key, ipfsLink) {
   return new Promise(function (resolve, reject) {
     storeItem(key, ipfsLink).then(value => {
