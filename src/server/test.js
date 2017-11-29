@@ -1,60 +1,22 @@
 var storage = require('node-persist')
 
-function addItem (key, item) {
-  return new Promise(function (fulfill, reject) {
-    storage.init().then(function () {
-      storage.setItem(key, item).then(function (value) {
-        fulfill([key, value])
-      })
-    })
-  })
-}
-
-function getItem (key) {
-  return new Promise(function (fulfill, reject) {
-    storage.init().then(function () {
-      storage.getItem(key).then(function (value) {
-        fulfill([key, value])
-      })
-    })
-  })
-}
-
-function handleVerification_old (nkey, newClaim) {
-    // CONVERT VC TO ARRAY!
-  var newClaimArray = []
-  newClaimArray.push(newClaim)
-
-  getItem(nkey).then(value => {
-    var newClaimsList
-    if (value[1]) {
-      console.log('Appending...')
-      newClaimsList = value[1].concat(newClaimArray)
-    } else {
-      console.log('Creating new list')
-      newClaimsList = newClaimArray
-    }
-    return addItem(value[0], newClaimsList)
-  }).then(value => {
-    console.log('Sucess \n' + value)
-  })
-}
+var ipfsStorage = require('./ipfsstorage.js')
 
 function handleVerification (nkey, newClaim) {
   return new Promise(function (fulfill, reject) {
     var newClaimArray = []
     newClaimArray.push(newClaim)
 
-    getItem(nkey).then(value => {
+    ipfsStorage.getItem(nkey).then(value => {
       var newClaimsList
-      if (value[1]) {
+      if (value) {
         console.log('Appending...')
         newClaimsList = value[1].concat(newClaimArray)
       } else {
         console.log('Creating new list')
         newClaimsList = newClaimArray
       }
-      return addItem(value[0], newClaimsList)
+      return ipfsStorage.addItem(nkey, newClaimsList)
     }).then(value => {
       console.log('Sucess \n' + value)
       fulfill('Sucess :)')
@@ -64,7 +26,7 @@ function handleVerification (nkey, newClaim) {
 
 function getClaimsJSONByUrl (url) {
   return new Promise(function (fulfill, reject) {
-    getItem(url).then(value => {
+    ipfsStorage.getItem(url).then(value => {
       var claimsJSON = {}
       claimsJSON.claimsList = value
       fulfill(claimsJSON)
@@ -74,9 +36,10 @@ function getClaimsJSONByUrl (url) {
 
 function getClaimsCountsJSONByUrl (url) {
   return new Promise(function (fulfill, reject) {
-    getItem(url).then(values => {
-      if (values[1]) {
+    ipfsStorage.getItem(url).then(values => {
+      if (values) {
         fulfill(values[1].length)
+                // fulfill("3")
       } else {
         fulfill('0')
       }
@@ -125,10 +88,22 @@ newClaim.push(vc3)
 
 var nkey = 'f65bded9dff8a564d4d0e601f76c206334962dc0072555ed811c6b3f1bebb2e7'
 
-handleVerification(nkey, vc).then(console.log).catch((err) => {
+function printStorage () {
+  storage.init().then(function () {
+    var keys = storage.keys()
+
+    for (let i = 0; i < keys.length; i++) {
+      console.log(keys[i] + ' -> ' + storage.get(keys[i]))
+    }
+  })
+}
+
+printStorage()
+/* handleVerification(nkey, vc).then(console.log).catch((err) => {
   console.log(err)
 })
 
+*/
 /*
 
 //addItem("2",array).then(console.log)
