@@ -102,6 +102,7 @@ class Sha256 {
      * @returns {string} Hash of msg as hex character string.
      */
   static hash (msg, options) {
+    console.log('Sha is here ;) ')
     const defaults = { msgFormat: 'string', outFormat: 'hex' }
     const opt = Object.assign(defaults, options)
 
