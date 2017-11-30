@@ -257,8 +257,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 console.log('Helloooo')
 
-var serverAddress = 'http://146.193.41.153:8092/'
-// var serverAddress = 'http://localhost:8092/'
+// var serverAddress = 'http://146.193.41.153:8092/'
+var serverAddress = 'http://localhost:8092/'
 
 function clickClaims (articleId) {
   console.log('Opened claims')

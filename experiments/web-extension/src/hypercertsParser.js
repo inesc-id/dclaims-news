@@ -3,12 +3,12 @@ var exports = module.exports = {}
 
 const defaultValue = true
 
-const homePageDefaultValues = {
+const homePageDefaultValues2 = {
   newsElementClass: 'homepage-news-element',
   newsTitleClass: 'homepage-news-title'
 }
 
-const homePageDefaultValues2 = {
+const homePageDefaultValues = {
   newsElementClass: 'blog-article',
   newsTitleClass: 'article-title'
 }
