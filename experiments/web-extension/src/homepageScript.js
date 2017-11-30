@@ -3,8 +3,8 @@ import NewsParser from './hypercertsParser.js'
 
 console.log('Helloooo')
 
-// var serverAddress = 'http://146.193.41.153:8092/'
-var serverAddress = 'http://localhost:8092/'
+var serverAddress = 'http://146.193.41.153:8092/'
+// var serverAddress = 'http://localhost:8092/'
 
 function clickClaims (articleId) {
   console.log('Opened claims')

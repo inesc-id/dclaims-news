@@ -1,11 +1,13 @@
- // var serverAddress = 'http://146.193.41.153:8092/'
+ var serverAddress = 'http://146.193.41.153:8092/'
  import Sha256 from './sha256.js'
- var serverAddress = 'http://localhost:8092/'
+ // var serverAddress = 'http://localhost:8092/'
+ import NewsParser from './hypercertsParser.js'
 
  var articleId = ''
 
  function generateArticleId () {
-   var title = document.getElementsByClassName('post-heading')[0].getElementsByTagName('h1')[0].innerHTML
+   // var title = document.getElementsByClassName('post-heading')[0].getElementsByTagName('h1')[0].innerHTML
+   var title = NewsParser.getTitleElement(document)
    var strippedTitle = title.replace(/\W/g, '').toLowerCase()
    articleId = Sha256.hash(strippedTitle)
  }
