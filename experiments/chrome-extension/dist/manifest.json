@@ -11,12 +11,16 @@
             "js": [
                  "inject.js"
             ],
+            "css":[
+
+            ],
             
             "run_at": "document_end"
         }
     ],
     "web_accessible_resources":[
         "homepage.bundle.js",
-        "newspage.bundle.js"
+        "newspage.bundle.js",
+        "css/hypercerts.css"
         ]
 }

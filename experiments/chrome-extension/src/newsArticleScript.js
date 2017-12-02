@@ -1,7 +1,7 @@
  var serverAddress = 'http://146.193.41.153:8092/'
  import Sha256 from './sha256.js'
- // var serverAddress = 'http://localhost:8092/'
- import NewsParser from './hypercertsParser.js'
+ var serverAddress = 'http://localhost:8092/'
+ // import NewsParser from './hypercertsParser.js'
 
  var articleId = ''
 

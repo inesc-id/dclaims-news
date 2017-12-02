@@ -1,10 +1,11 @@
 import Sha256 from './sha256.js'
 import NewsParser from './hypercertsParser.js'
+import ElementsGenerator from './elementsGenerator'
 
 console.log('Helloooo')
 
-var serverAddress = 'http://146.193.41.153:8092/'
-// var serverAddress = 'http://localhost:8092/'
+// var serverAddress = 'http://146.193.41.153:8092/'
+var serverAddress = 'http://localhost:8092/'
 
 function clickClaims (articleId) {
   console.log('Opened claims')
@@ -87,26 +88,7 @@ function createViewClaimsModals (articleId, title) {
   modalDiv.setAttribute('role', 'dialog')
   var claimBodyId = 'modal-claim-body-' + articleId
 
-  var html = ''
-  html += "  <div class='modal-dialog'>"
-  html += '    <!-- Modal content-->'
-  html += "    <div class='modal-content'>"
-  html += "      <div class='modal-header'>"
-  html += "        <button type='button' class='close' data-dismiss='modal'>&times;</button>"
-  html += "        <h4 class='modal-title'>'" + title + "'</h4>"
-  html += '      </div>'
-  html += "      <div class='modal-body' id='" + claimBodyId + "'>"
-  html += '        <p>The title induces the reader in error</p>'
-  html += '        <p> Science cuts two ways, of course; Clearly suggests there is another way</p>'
-  html += '      </div>'
-  html += "      <div class='modal-footer'>"
-  html += "        <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>"
-  html += '      </div>'
-  html += '    </div>'
-  html += ''
-  html += '  </div>'
-
-  modalDiv.innerHTML = html
+  modalDiv.innerHTML = ElementsGenerator.generateViewReviewsModal(title, claimBodyId)
 
   document.body.appendChild(modalDiv)
 }
