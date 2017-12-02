@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -349,64 +349,38 @@ window.location.href.toString().includes("campus-community")
 */
 
 /***/ }),
-/* 2 */,
-/* 3 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _sha = __webpack_require__(0);
+var _exports = module.exports = {};
 
-var _sha2 = _interopRequireDefault(_sha);
-
-var _hypercertsParser = __webpack_require__(1);
-
-var _hypercertsParser2 = _interopRequireDefault(_hypercertsParser);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var serverAddress = 'http://146.193.41.153:8092/';
-// var serverAddress = 'http://localhost:8092/'
-
-
-var articleId = '';
-
-function generateArticleId() {
-  // var title = document.getElementsByClassName('post-heading')[0].getElementsByTagName('h1')[0].innerHTML
-  var title = _hypercertsParser2.default.getTitleElement(document);
-  var strippedTitle = title.replace(/\W/g, '').toLowerCase();
-  articleId = _sha2.default.hash(strippedTitle);
-}
-
-function createGenerateClaimButton() {
-  var buttonDiv = document.createElement('div');
-  var buttonDivId = 'generate-claim-button' + articleId;
-  buttonDiv.id = buttonDivId;
-  buttonDiv.class = 'container';
-  document.getElementsByTagName('article')[0].appendChild(buttonDiv);
-
+_exports.createViewReviewsModal = function (title, claimBodyId) {
   var html = '';
+  html += "  <div class='modal-dialog'>";
+  html += '    <!-- Modal content-->';
+  html += "    <div class='modal-content'>";
+  html += "      <div class='modal-header'>";
+  html += "        <button type='button' class='close' data-dismiss='modal'>&times;</button>";
+  html += "        <h4 class='modal-title'>'" + title + "'</h4>";
+  html += '      </div>';
+  html += "      <div class='modal-body' id='" + claimBodyId + "'>";
+  html += '        <p>The title induces the reader in error</p>';
+  html += '        <p> Science cuts two ways, of course; Clearly suggests there is another way</p>';
+  html += '      </div>';
+  html += "      <div class='modal-footer'>";
+  html += "        <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>";
+  html += '      </div>';
+  html += '    </div>';
+  html += '';
+  html += '  </div>';
 
-  html += "            <div class='row'>";
-  html += "              <button type='button' class='btn btn-info btn-lg' data-toggle='modal' data-target='#generate-claim-modal-" + articleId + "'>Contest the Title</button>";
-  html += '            </div>';
+  return html;
+};
 
-  document.getElementById(buttonDivId).innerHTML = html;
-}
-
-function createGenerateClaimModal() {
-  var modalDiv = document.createElement('div');
-  var modalId = 'generate-claim-modal-' + articleId;
-  modalDiv.id = modalId;
-  modalDiv.setAttribute('class', 'modal fade');
-  modalDiv.setAttribute('role', 'dialog');
-
-  var articleIdS = 'clickClaims("' + articleId + '")';
-
-  var funcCall = 'sendMessage(document.getElementById("claim").value)';
-  // var funcCall = '"testOnClick()"'
-
+_exports.createClaimModal = function (funcCall) {
   var html = '';
   html += "       <div class='modal-dialog modal-lg'>";
   html += '         <!-- Modal content-->';
@@ -422,7 +396,6 @@ function createGenerateClaimModal() {
   html += "                 <input type='text' class='form-control' id='claim'>";
   html += '               </div>';
   html += "               <button type='button' class='btn btn-default' onclick=" + funcCall + '>Submit</button>';
-  // html += "               <button type='button' class='btn btn-default' onclick=" + funcCall + '>Submit</button>'
   html += "               <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>";
   html += '             </form>';
   html += '           </div>';
@@ -431,7 +404,83 @@ function createGenerateClaimModal() {
   html += '         </div>';
   html += '       </div>';
 
-  modalDiv.innerHTML = html;
+  return html;
+};
+
+_exports.createGenerateClaimButton = function (articleId) {
+  var html = '';
+
+  html += "            <div class='row'>";
+  html += "              <button type='button' class='btn btn-info btn-lg' data-toggle='modal' data-target='#generate-claim-modal-" + articleId + "'>Contest the Title</button>";
+  html += '            </div>';
+
+  return html;
+};
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+module.exports = {"serverAddress":"http://146.193.41.153:8092/","_serverAddress":"http://localhost:8092/"}
+
+/***/ }),
+/* 4 */,
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _sha = __webpack_require__(0);
+
+var _sha2 = _interopRequireDefault(_sha);
+
+var _hypercertsParser = __webpack_require__(1);
+
+var _hypercertsParser2 = _interopRequireDefault(_hypercertsParser);
+
+var _elementsGenerator = __webpack_require__(2);
+
+var _elementsGenerator2 = _interopRequireDefault(_elementsGenerator);
+
+var _serverConfig = __webpack_require__(3);
+
+var _serverConfig2 = _interopRequireDefault(_serverConfig);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var serverAddress = _serverConfig2.default['serverAddress'];
+
+var articleId = '';
+
+function generateArticleId() {
+  var title = _hypercertsParser2.default.getTitleElement(document);
+  var strippedTitle = title.replace(/\W/g, '').toLowerCase();
+  articleId = _sha2.default.hash(strippedTitle);
+}
+
+function createGenerateClaimButton() {
+  var buttonDiv = document.createElement('div');
+  var buttonDivId = 'generate-claim-button' + articleId;
+  buttonDiv.id = buttonDivId;
+  buttonDiv.class = 'container';
+  document.getElementsByTagName('article')[0].appendChild(buttonDiv);
+
+  document.getElementById(buttonDivId).innerHTML = _elementsGenerator2.default.createGenerateClaimButton(articleId);
+}
+
+function createGenerateClaimModal() {
+  var modalDiv = document.createElement('div');
+  var modalId = 'generate-claim-modal-' + articleId;
+  modalDiv.id = modalId;
+  modalDiv.setAttribute('class', 'modal fade');
+  modalDiv.setAttribute('role', 'dialog');
+
+  var articleIdS = 'clickClaims("' + articleId + '")';
+
+  var funcCall = 'sendMessage(document.getElementById("claim").value)';
+
+  modalDiv.innerHTML = _elementsGenerator2.default.createClaimModal(funcCall);
 
   document.body.appendChild(modalDiv);
 }
@@ -448,24 +497,11 @@ function sendMessage(name) {
       console.log(this.response);
     }
   });
-  // application/javascript
-  // http://146.193.41.153:8092/verify?claim=veryfake&article=jn_99
+
   var claim = name;
-  // var article_url = window.location.href
-  // var serverAddress = "http://turbina.gsd.inesc-id.pt:8092"
-  /*
-  var title = document.getElementsByClassName('post-heading')[0].getElementsByTagName('h1')[0].innerHTML
-  var strippedTitle = title.replace(/\W/g, '').toLowerCase()
-  var articleId = Sha256.hash(strippedTitle)
-  */
   var request = serverAddress + 'verify?claim=' + claim + '&article=' + articleId;
-
-  console.log('REQUEST::::::     ' + request);
-
   xhr.open('GET', request);
   xhr.setRequestHeader('content-type', 'application/javascript');
-
-  // xhr.setRequestHeader("postman-token", "9478c587-f2da-2c03-fe1a-5747306ae18f");
 
   xhr.send(data);
 }

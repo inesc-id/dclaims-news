@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -355,6 +355,81 @@ window.location.href.toString().includes("campus-community")
 "use strict";
 
 
+var _exports = module.exports = {};
+
+_exports.createViewReviewsModal = function (title, claimBodyId) {
+  var html = '';
+  html += "  <div class='modal-dialog'>";
+  html += '    <!-- Modal content-->';
+  html += "    <div class='modal-content'>";
+  html += "      <div class='modal-header'>";
+  html += "        <button type='button' class='close' data-dismiss='modal'>&times;</button>";
+  html += "        <h4 class='modal-title'>'" + title + "'</h4>";
+  html += '      </div>';
+  html += "      <div class='modal-body' id='" + claimBodyId + "'>";
+  html += '        <p>The title induces the reader in error</p>';
+  html += '        <p> Science cuts two ways, of course; Clearly suggests there is another way</p>';
+  html += '      </div>';
+  html += "      <div class='modal-footer'>";
+  html += "        <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>";
+  html += '      </div>';
+  html += '    </div>';
+  html += '';
+  html += '  </div>';
+
+  return html;
+};
+
+_exports.createClaimModal = function (funcCall) {
+  var html = '';
+  html += "       <div class='modal-dialog modal-lg'>";
+  html += '         <!-- Modal content-->';
+  html += "         <div class='modal-content'>";
+  html += "           <div class='modal-header'>";
+  html += "             <button type='button' class='close' data-dismiss='modal'>&times;</button>";
+  html += "             <h4 class='modal-title'>Review Article's Title</h4>";
+  html += '           </div>';
+  html += "           <div class='modal-body'>";
+  html += '             <form>';
+  html += "               <div class='form-group'>";
+  html += "                 <label for='claim'>Claim:</label>";
+  html += "                 <input type='text' class='form-control' id='claim'>";
+  html += '               </div>';
+  html += "               <button type='button' class='btn btn-default' onclick=" + funcCall + '>Submit</button>';
+  html += "               <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>";
+  html += '             </form>';
+  html += '           </div>';
+  html += "           <div class='modal-footer'>";
+  html += '           </div>';
+  html += '         </div>';
+  html += '       </div>';
+
+  return html;
+};
+
+_exports.createGenerateClaimButton = function (articleId) {
+  var html = '';
+
+  html += "            <div class='row'>";
+  html += "              <button type='button' class='btn btn-info btn-lg' data-toggle='modal' data-target='#generate-claim-modal-" + articleId + "'>Contest the Title</button>";
+  html += '            </div>';
+
+  return html;
+};
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+module.exports = {"serverAddress":"http://146.193.41.153:8092/","_serverAddress":"http://localhost:8092/"}
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 var _sha = __webpack_require__(0);
 
 var _sha2 = _interopRequireDefault(_sha);
@@ -363,20 +438,22 @@ var _hypercertsParser = __webpack_require__(1);
 
 var _hypercertsParser2 = _interopRequireDefault(_hypercertsParser);
 
+var _elementsGenerator = __webpack_require__(2);
+
+var _elementsGenerator2 = _interopRequireDefault(_elementsGenerator);
+
+var _serverConfig = __webpack_require__(3);
+
+var _serverConfig2 = _interopRequireDefault(_serverConfig);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-console.log('Helloooo');
-
-var serverAddress = 'http://146.193.41.153:8092/';
-// var serverAddress = 'http://localhost:8092/'
+var serverAddress = _serverConfig2.default['serverAddress'];
 
 function clickClaims(articleId) {
   console.log('Opened claims');
   var claimBodyId = 'modal-claim-body-' + articleId;
   document.getElementById(claimBodyId).innerHTML = "There are no claims about this article's title yet. Open the article and be the first!";
-
-  // http://146.193.41.153:8092/getclaims?article=http://turbina.gsd.inesc-id.pt:8095/post.html
-
   var data = null;
   var xhr = new XMLHttpRequest();
   xhr.withCredentials = false;
@@ -386,28 +463,11 @@ function clickClaims(articleId) {
       var claims = JSON.parse(this.response);
 
       var cleanList = claims['claimsList'][1];
-      // console.log(cleanList.length)
-
-      var txt = '<div class="container">';
-
-      for (var i = 0; i < cleanList.length; i++) {
-        // console.log(cleanList[i])
-        var st1 = '  CLAIM #' + (i + 1);
-        var st2 = 'Text: \n' + cleanList[i]['claim'];
-        var st3 = 'User: ' + cleanList[i]['ip'];
-
-        // txt+= '<div class="row">'
-        txt += '<p class="claimtitle">' + st1 + '</p>' + '<p class="claimbody">' + st2 + '</p>' + '<p class="claimuser">' + st3 + '</p>';
-        // txt+='</div>'
-      }
-      txt += '</div>';
-      document.getElementById(claimBodyId).innerHTML = txt;
+      displayClaims(claimBodyId, cleanList);
     }
   });
 
   var request = serverAddress + 'getclaims?article=' + articleId;
-
-  // console.log('RESQUESTING:  \n' + request)
 
   xhr.open('GET', request);
   xhr.setRequestHeader('content-type', 'application/javascript');
@@ -415,9 +475,22 @@ function clickClaims(articleId) {
 }
 window.clickClaims = clickClaims;
 
-function titles() {
-  // console.log('Test file')
+function displayClaims(claimBodyId, cleanList) {
+  var txt = '<div class="container">';
 
+  for (var i = 0; i < cleanList.length; i++) {
+    // console.log(cleanList[i])
+    var st1 = '  CLAIM #' + (i + 1);
+    var st2 = 'Text: \n' + cleanList[i]['claim'];
+    var st3 = 'User: ' + cleanList[i]['ip'];
+
+    txt += '<p class="claimtitle">' + st1 + '</p>' + '<p class="claimbody">' + st2 + '</p>' + '<p class="claimuser">' + st3 + '</p>';
+  }
+  txt += '</div>';
+  document.getElementById(claimBodyId).innerHTML = txt;
+}
+
+function titles() {
   var list = document.getElementsByClassName('homepage-news-title');
   var _iteratorNormalCompletion = true;
   var _didIteratorError = false;
@@ -428,9 +501,8 @@ function titles() {
       var item = _step.value;
 
       var strippedTitle = item.innerText.replace(/\W/g, '').toLowerCase();
-      // console.log(strippedTitle)
+      //
       var encrypted = _sha2.default.hash(strippedTitle);
-      // console.log('HASH: ' + encrypted)
     }
   } catch (err) {
     _didIteratorError = true;
@@ -460,7 +532,6 @@ function createViewClaimsButton(articleId, parent) {
   parent.appendChild(buttonDiv);
 
   var html = "<button type='button' class='btn btn-info btn-lg homepage-news-claimsViewer-button' onclick=" + articleIdS + " data-toggle='modal' data-target= #modal-" + articleId + ">View reviews <span id='span-" + buttonId + "' class='badge clickbaitnotification homepage-news-claimsCounter-badge'></span></button>";
-  // console.log('butttoooooon: ' + html)
   document.getElementById(divId).innerHTML = html;
 }
 
@@ -472,26 +543,7 @@ function createViewClaimsModals(articleId, title) {
   modalDiv.setAttribute('role', 'dialog');
   var claimBodyId = 'modal-claim-body-' + articleId;
 
-  var html = '';
-  html += "  <div class='modal-dialog'>";
-  html += '    <!-- Modal content-->';
-  html += "    <div class='modal-content'>";
-  html += "      <div class='modal-header'>";
-  html += "        <button type='button' class='close' data-dismiss='modal'>&times;</button>";
-  html += "        <h4 class='modal-title'>'" + title + "'</h4>";
-  html += '      </div>';
-  html += "      <div class='modal-body' id='" + claimBodyId + "'>";
-  html += '        <p>The title induces the reader in error</p>';
-  html += '        <p> Science cuts two ways, of course; Clearly suggests there is another way</p>';
-  html += '      </div>';
-  html += "      <div class='modal-footer'>";
-  html += "        <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>";
-  html += '      </div>';
-  html += '    </div>';
-  html += '';
-  html += '  </div>';
-
-  modalDiv.innerHTML = html;
+  modalDiv.innerHTML = _elementsGenerator2.default.createViewReviewsModal(title, claimBodyId);
 
   document.body.appendChild(modalDiv);
 }
@@ -505,7 +557,7 @@ function setBadgeCount(articleId) {
   xhr.addEventListener('readystatechange', function () {
     if (this.readyState === 4) {
       var number = this.response.toString();
-      // console.log('Server response:    ' + number)
+      console.log('Server response:    ' + number);
       document.getElementById(badgeId).innerHTML = number;
     }
   });
@@ -517,15 +569,11 @@ function setBadgeCount(articleId) {
 }
 
 function allElements() {
-  // console.log('TITLLLLEE: ')
-  // var list = document.getElementsByClassName('homepage-news-element')
   var list = _hypercertsParser2.default.getNewsItems(document);
 
   for (var i = 0; i < list.length; i++) {
-    // var title = list[i].getElementsByClassName('homepage-news-title')[0].innerText
     var title = _hypercertsParser2.default.getTitleElement(list[i]);
 
-    // var strippedTitle = title.replace(/\W/g, '').toLowerCase()
     var strippedTitle = _hypercertsParser2.default.cleanTitle(title);
     var articleId = _sha2.default.hash(strippedTitle);
 
