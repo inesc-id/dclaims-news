@@ -16,7 +16,7 @@ Using the Hypercerts-Web-Extension users can generate claims  (whose authenticit
 
 ## Project Structure
 Hypercerts is made of three main components. Hypercert-core, Hypercerts-Web-Extension and Hypercerts-Ethereum (currently a mock).
-![](https://github.com/inesc-id/hypercerts-pm/blob/master/images/hc-arch.jpg?raw=true)
+![](https://github.com/inesc-id/hypercerts-pm/blob/master/images/hc-arch2.jpg?raw=true)
 The directory structure of this repo is as follows:
 ```
 -src
