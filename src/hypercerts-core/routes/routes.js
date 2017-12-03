@@ -1,4 +1,3 @@
-// var storage = require('node-persist')
 var ipfsStorage = require('../ipfsstorage.js')
 
 function handleVerification (nkey, newClaim) {

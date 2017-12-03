@@ -421,7 +421,7 @@ _exports.createGenerateClaimButton = function (articleId) {
 /* 3 */
 /***/ (function(module, exports) {
 
-module.exports = {"serverAddress":"http://146.193.41.153:8092/","_serverAddress":"http://localhost:8092/"}
+module.exports = {"_serverAddress":"http://146.193.41.153:8092/","serverAddress":"http://localhost:8092/"}
 
 /***/ }),
 /* 4 */,

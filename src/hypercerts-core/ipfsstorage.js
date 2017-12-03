@@ -1,12 +1,9 @@
 'use strict'
 var Promise = require('promise')
 var ipfsAPI = require('ipfs-api')
-var HashTable = require('hashtable')
-var bl = require('bl')
 var uniqueFilename = require('unique-filename')
 
 var fs = require('fs')
-var storage = require('node-persist')
 var blockchainAPI = require('./blockchainAPI.js')
 
 var exports = module.exports = {}
@@ -17,58 +14,29 @@ var claimsListPath = 'claims/'
 var claimsListFileName = 'claimsList.json'
 
 function storeItem (key, item) {
-  return new Promise(function (fulfill, reject) {
+  return new Promise(function (resolve, reject) {
     blockchainAPI.storeItem(key, item).then(function (value) {
       if (value) {
-        fulfill([key, value])
+        resolve([key, value])
       } else {
-        fulfill(null)
+        resolve(null)
       }
     })
   })
 }
 
 function getItemFromStorage (key) {
-  return new Promise(function (fulfill, reject) {
+  return new Promise(function (resolve, reject) {
     blockchainAPI.getItemFromStorage(key).then(function (value) {
       if (value) {
-        fulfill(value)
+        resolve(value)
       } else {
-        fulfill(null)
+        resolve(null)
       }
     })
   })
 }
 
-/*
-function storeItem (key, item) {
-  return new Promise(function (fulfill, reject) {
-    storage.init().then(function () {
-      storage.setItem(key, item).then(function (value) {
-        if (value) {
-          fulfill([key, value])
-        } else {
-          fulfill(null)
-        }
-      })
-    })
-  })
-}
-
-function getItemFromStorage (key) {
-  return new Promise(function (fulfill, reject) {
-    storage.init().then(function () {
-      storage.getItem(key).then(function (value) {
-        if (value) {
-          fulfill(value)
-        } else {
-          fulfill(null)
-        }
-      })
-    })
-  })
-}
-*/
 function updateRegistry (key, ipfsLink) {
   return new Promise(function (resolve, reject) {
     storeItem(key, ipfsLink).then(value => {
@@ -95,8 +63,6 @@ function getLinkFromRegistry (key) {
     }
   })
 }
-
-// // // //
 
 exports.addItem = function (key, item) {
   console.log('Adding item')
@@ -174,21 +140,3 @@ function getFileFromIPFS (multihash) {
     }
   })
 }
-
-/*
-addItem('jn1', array1).then(console.log).then(value => {
-  getItem('jn1').then(console.log)
-})
-*/
-/*
-storeClaimList(array1).then(value=>{
-  addProofsListToIPFS('jn1').then(console.log).then(value => {
-  getItem('jn1').then(console.log)
-})
-}
-
-.catch((err) => {
-  console.log('ERROOOOR')
-  console.log(err)
-})
-*/
