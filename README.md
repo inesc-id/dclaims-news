@@ -109,18 +109,26 @@ Currently this ethereum-mock serves as a translator between news articles's ID a
 > npm install
 > npm server.js
 ```
-5. Install the Hypercerts-web-extension
+5. On a new terminal window, install, configure and compile the Chrome extension
+```sh
+> cd src/hypercerts-web-extension
+> npm install
+# Open and configure src/serverConfig.json by adding the correct ip:port of your running IPFS daemon in serverAddress (ignore the _serverAddress)
+# Compile with webpack
+npm run webpack
+```
+6. Install the Hypercerts-web-extension in Chrome
     a. Open Google Chrome
     b. On the address bar, go to `chrome://extensions`
     c. Click `Load unpacked extension`
     d. Navigate to and select src/hypercerts-web-extension/dist
 
-6. Use the extension! Visit the website [`https://tecnico.ulisboa.pt/en/news`](https://tecnico.ulisboa.pt/en/news)
+7. Use the extension! Visit the website [`https://tecnico.ulisboa.pt/en/news`](https://tecnico.ulisboa.pt/en/news)
 **Note:** Since you're probably running Hypercerts-core on your local machine, without https, we will have to turn a chrome safety feature off.
             - Click the shield icon in the far right of the address bar.
             - In the pop-up window, click Load anyway or Load unsafe script (depending on your Chrome version).
 
-7. Open a news article and generate a claim about it! Then go back to the homepage and verify that the claims counter of that article has increased. You can then click the `view claims` button, and the claim you generated should appear.
+8. Open a news article and generate a claim about it! Then go back to the homepage and verify that the claims counter of that article has increased. You can then click the `view claims` button, and the claim you generated should appear.
 **Note:** There counter has a [bug](https://github.com/inesc-id/hypercerts/issues/7) which results in the count sometimes appearing as `0`, this can be resolved by reloading the page a few times.
 
 [![JavaScript Style Guide](https://cdn.rawgit.com/standard/standard/master/badge.svg)](https://github.com/standard/standard)
