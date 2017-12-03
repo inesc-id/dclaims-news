@@ -1,8 +1,8 @@
 var Promise = require('promise')
 var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest
 
-// const serverAddress = 'http://localhost:8088/'
-const serverAddress = 'http://146.193.41.153:8088/'
+const serverAddress = 'http://localhost:8088/'
+//const serverAddress = 'http://146.193.41.153:8088/'
 
 var exports = module.exports = {}
 
