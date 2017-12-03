@@ -108,3 +108,5 @@ npm server.js
             - In the pop-up window, click Load anyway or Load unsafe script (depending on your Chrome version).
 
 7. Open a news article and generate a claim about it! Then go back to the homepage and verify that the claims counter of that article has increased. You can then click the `view claims` button, and the claim you generated should appear.
+
+[![JavaScript Style Guide](https://cdn.rawgit.com/standard/standard/master/badge.svg)](https://github.com/standard/standard)
