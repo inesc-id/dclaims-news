@@ -85,7 +85,7 @@ Currently this ethereum-mock serves as a translator between news articles's ID a
 `git clone https://github.com/inesc-id/hypercerts.git` 
 2. Install IPFS-Go, [see here](https://github.com/ipfs/go-ipfs#install) and run it with `ipfs daemon`.
 **Note:** We are using the ipfs-js-api so there is the need to configure ipfs daemon to listen on the correct port, `5001` in this case. The example below shows how to correctly configure it.
-```
+```sh
 # Show the ipfs config API port to check it is correct
 > ipfs config Addresses.API
 /ip4/127.0.0.1/tcp/5001
@@ -97,13 +97,13 @@ Currently this ethereum-mock serves as a translator between news articles's ID a
 > ipfs daemon
 ```
 3. On a new terminal window, install and run Hypercerts-core
-```
+```sh
 > cd src/hypercerts-core
 > npm install
 > node app.js
 ```
 4. On a new terminal window, install and run Hypercerts-ethereum-mock
-```
+```sh
 > cd src/hypercerts-ethereum-mock
 > npm install
 > npm server.js
