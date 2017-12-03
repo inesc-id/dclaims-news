@@ -6,6 +6,17 @@
 - Advisors: 
   - [Nuno Santos](http://www.gsd.inesc-id.pt/~nsantos/)
   - [David Dias](http://daviddias.me/)
+  
+Table of Contents
+=================
+
+   * [Hypercerts](#hypercerts)
+      * [Project Description](#project-description)
+      * [Project Structure](#project-structure)
+         * [Hypercerts Web-Extension](#hypercerts-web-extension)
+         * [Hypercerts-Core](#hypercerts-core)
+         * [Hypercerts-Ethereum-mock](#hypercerts-ethereum-mock)
+      * [Usage](#usage)
 
 ## Project Description
 
