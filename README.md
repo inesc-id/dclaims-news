@@ -12,10 +12,10 @@
 Hypercerts is a platform that enables a truly distributed and trustless way of managing claims about News articles.
 Currently under development.
 
-Using the Hypercerts-Web-Extension users can generate claims  (whose authenticity and integrity can be verified by anyone without the need of a third party) about any news article, and those claims can be presented to all other users. This all happens in a distributed and trustless form, with the use of IPFS and Ethereum.
+Using the Hypercerts-Web-Extension users can generate claims  (whose authenticity and integrity can be verified by anyone without the need of a third party) about any news article, and those claims can be presented to all other users. This all happens in a distributed and trustless form, with the use of [IPFS](https://ipfs.io) and [Ethereum](https://www.ethereum.org).
 
 ## Project Structure
-Hypercerts is made of three main components. Hypercert-core, Hypercerts-Web-Extension and Hypercerts-Ethereum (currently a mock).
+Hypercerts is made of three main components. [Hypercert-core](https://github.com/inesc-id/hypercerts/tree/master/src/hypercerts-core), [Hypercerts-Web-Extension](https://github.com/inesc-id/hypercerts/tree/master/src/hypercerts-web-extension) and [Hypercerts-Ethereum](https://github.com/inesc-id/hypercerts/tree/master/src/hypercerts-ethereum-mock) (currently a mock).
 ![](https://github.com/inesc-id/hypercerts-pm/blob/master/images/hc-arch2.jpg?raw=true)
 The directory structure of this repo is as follows:
 ```
@@ -84,7 +84,7 @@ Currently this ethereum-mock serves as a translator between news articles's ID a
 1. Clone this repo.
 `git clone https://github.com/inesc-id/hypercerts.git` 
 2. Install IPFS-Go, [see here](https://github.com/ipfs/go-ipfs#install) and run it with `ipfs daemon`.
-**Note:** We are using the ipfs-js-api so there is the need to configure ipfs daemon to listen on the correct port, `5001` in this case. The example below shows how to correctly configure it.
+**Note:** We are using the ipfs-js-api so there is the need to configure ipfs daemon to listen on the correct port, `5001` in this case. The example below shows how to correctly configure it. ([more info here](https://github.com/ipfs/js-ipfs-api#install))
 ```sh
 # Show the ipfs config API port to check it is correct
 > ipfs config Addresses.API
@@ -102,6 +102,7 @@ Currently this ethereum-mock serves as a translator between news articles's ID a
 > npm install
 > node app.js
 ```
+**Note:** Hypercerts requires Node.js v6 or higher.
 4. On a new terminal window, install and run Hypercerts-ethereum-mock
 ```sh
 > cd src/hypercerts-ethereum-mock
@@ -114,11 +115,12 @@ Currently this ethereum-mock serves as a translator between news articles's ID a
     c. Click `Load unpacked extension`
     d. Navigate to and select src/hypercerts-web-extension/dist
 
-6. Use the extension! Visit the website `https://tecnico.ulisboa.pt/en/news`
+6. Use the extension! Visit the website [`https://tecnico.ulisboa.pt/en/news`](https://tecnico.ulisboa.pt/en/news)
 **Note:** Since you're probably running Hypercerts-core on your local machine, without https, we will have to turn a chrome safety feature off.
             - Click the shield icon in the far right of the address bar.
             - In the pop-up window, click Load anyway or Load unsafe script (depending on your Chrome version).
 
 7. Open a news article and generate a claim about it! Then go back to the homepage and verify that the claims counter of that article has increased. You can then click the `view claims` button, and the claim you generated should appear.
+**Note:** There counter has a [bug](https://github.com/inesc-id/hypercerts/issues/7) which results in the count sometimes appearing as `0`, this can be resolved by reloading the page a few times.
 
 [![JavaScript Style Guide](https://cdn.rawgit.com/standard/standard/master/badge.svg)](https://github.com/standard/standard)
