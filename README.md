@@ -83,7 +83,7 @@ Currently this ethereum-mock serves as a translator between news articles's ID a
 ## Usage
 1. Clone this repo.
 `git clone https://github.com/inesc-id/hypercerts.git` 
-2. Install IPFS-Go, [see here](https://github.com/ipfs/go-ipfs#install).
+2. Install IPFS-Go, [see here](https://github.com/ipfs/go-ipfs#install) and run it with `ipfs daemon`.
 3. On a new terminal window, install and run Hypercerts-core
 ```
 cd src/hypercerts-core
