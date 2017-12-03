@@ -96,19 +96,29 @@ Currently this ethereum-mock serves as a translator between news articles's ID a
 # Run the daemon
 > ipfs daemon
 ```
-3. On a new terminal window, install and run Hypercerts-core
-```sh
-> cd src/hypercerts-core
-> npm install
-> node app.js
-```
-**Note:** Hypercerts requires Node.js v6 or higher.
-4. On a new terminal window, install and run Hypercerts-ethereum-mock
+3. On a new terminal window, install and run Hypercerts-ethereum-mock
 ```sh
 > cd src/hypercerts-ethereum-mock
 > npm install
 > npm server.js
 ```
+**Note:** Hypercerts requires Node.js v6 or higher.
+
+4. On a new terminal window, install and run Hypercerts-core
+```sh
+> cd src/hypercerts-core
+> npm install
+> node app.js
+```
+
+**Note:** If you are running Hypercerts-core in a different machine from the one you are running Hypercerts-ethereum mock (or changed the port), you need to update the `src/hypercerts-core/blockchainAPI.js` file:
+```js
+//const serverAddress = 'http://localhost:8088/'
+const serverAddress = 'hypercerts-mock-ethereum_ip:port'
+```
+
+
+
 5. On a new terminal window, install, configure and compile the Chrome extension
 ```sh
 > cd src/hypercerts-web-extension
