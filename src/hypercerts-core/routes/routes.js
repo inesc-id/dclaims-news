@@ -76,12 +76,10 @@ var appRouter = function (app) {
     console.log(claim)
 
     // var req_field = req.query.claim
-    // var req_url = req.query.article
+    var articleID = claim.claim.id
     // var req_ip = req.ip
 
-    var vc = {claim: req_field,
-      url: req_url,
-      ip: req_ip}
+
 
     var dummyClaim = {claim: 'req_field',
       url: 'req_url',
@@ -91,7 +89,7 @@ var appRouter = function (app) {
     console.log('           BEGIN')
     console.log('------------------------------ \n\n\n')
 
-    handleVerification(req_url, dummyClaim)
+    handleVerification(articleID, claim)
             .then(value => {
               console.log('------------------------------')
               console.log('           END')
