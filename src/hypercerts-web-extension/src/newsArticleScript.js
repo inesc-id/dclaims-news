@@ -56,6 +56,7 @@ function sendMessage (claimCategory, userId, freeText) {
   var claim = claimCategory
   // (issuerId, articleId, category, freeText)
   var newClaim = NewsClaims.newClaim(userId, articleId, claimCategory, freeText)
+  console.log(JSON.stringify(newClaim))
   var request = serverAddress + 'verify?claim=' + claim + '&article=' + articleId
   xhr.open('GET', request)
   xhr.setRequestHeader('content-type', 'application/javascript')

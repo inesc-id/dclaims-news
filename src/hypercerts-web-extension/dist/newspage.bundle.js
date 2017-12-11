@@ -406,12 +406,10 @@ _exports.createClaimModal = function (funcCall) {
   html += "               <div class='form-group'>";
   html += "                 <label for='name'>ID:</label>";
   html += "                 <input type='text' class='form-control' id='claim-modal-userId'>";
-  html += "                 <label for='claim'>Claim:</label>";
-  html += "                 <input type='text' class='form-control' id='claim'>";
   html += "                 <label for='freeText'>Free Text:</label>";
   html += "                 <input type='text' class='form-control' id='claim-modal-freeText'>";
   html += "                 <div class='styled-select slate'>";
-  html += '                   <select id ="claim-modal-claim-category">';
+  html += '                   <select id ="claim">';
   html += claimsCategoriesHTML();
   html += '                   </select';
   html += '                 </div>';
@@ -442,7 +440,7 @@ _exports.createGenerateClaimButton = function (articleId) {
 /* 3 */
 /***/ (function(module, exports) {
 
-module.exports = {"_serverAddress":"http://146.193.41.153:8092/","serverAddress":"http://localhost:8092/"}
+module.exports = {"serverAddress":"http://146.193.41.153:8092/","_serverAddress":"http://localhost:8092/"}
 
 /***/ }),
 /* 4 */
@@ -683,14 +681,14 @@ function createGenerateClaimModal() {
 
   var articleIdS = 'clickClaims("' + articleId + '")';
 
-  var funcCall = 'sendMessage(document.getElementById("claim").value)';
+  var funcCall = 'sendMessage(document.getElementById("claim").value,document.getElementById("claim-modal-userId").value,document.getElementById("claim-modal-freeText").value)';
 
   modalDiv.innerHTML = _elementsGenerator2.default.createClaimModal(funcCall);
 
   document.body.appendChild(modalDiv);
 }
 
-function sendMessage(name) {
+function sendMessage(claimCategory, userId, freeText) {
   var data = null;
 
   var xhr = new XMLHttpRequest();
@@ -703,7 +701,10 @@ function sendMessage(name) {
     }
   });
 
-  var claim = name;
+  var claim = claimCategory;
+  // (issuerId, articleId, category, freeText)
+  var newClaim = _newsClaims2.default.newClaim(userId, articleId, claimCategory, freeText);
+  console.log(JSON.stringify(newClaim));
   var request = serverAddress + 'verify?claim=' + claim + '&article=' + articleId;
   xhr.open('GET', request);
   xhr.setRequestHeader('content-type', 'application/javascript');

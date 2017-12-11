@@ -406,12 +406,10 @@ _exports.createClaimModal = function (funcCall) {
   html += "               <div class='form-group'>";
   html += "                 <label for='name'>ID:</label>";
   html += "                 <input type='text' class='form-control' id='claim-modal-userId'>";
-  html += "                 <label for='claim'>Claim:</label>";
-  html += "                 <input type='text' class='form-control' id='claim'>";
   html += "                 <label for='freeText'>Free Text:</label>";
   html += "                 <input type='text' class='form-control' id='claim-modal-freeText'>";
   html += "                 <div class='styled-select slate'>";
-  html += '                   <select id ="claim-modal-claim-category">';
+  html += '                   <select id ="claim">';
   html += claimsCategoriesHTML();
   html += '                   </select';
   html += '                 </div>';
@@ -442,7 +440,7 @@ _exports.createGenerateClaimButton = function (articleId) {
 /* 3 */
 /***/ (function(module, exports) {
 
-module.exports = {"_serverAddress":"http://146.193.41.153:8092/","serverAddress":"http://localhost:8092/"}
+module.exports = {"serverAddress":"http://146.193.41.153:8092/","_serverAddress":"http://localhost:8092/"}
 
 /***/ }),
 /* 4 */

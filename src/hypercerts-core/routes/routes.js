@@ -71,19 +71,27 @@ var appRouter = function (app) {
 
     // ex: http://146.193.41.153:8092/verify?claim=veryfake&article=jn_99
   app.get('/verify', function (req, res) {
-    var req_field = req.query.claim
-    var req_url = req.query.article
-    var req_ip = req.ip
+    var claim = JSON.parse(req.query.claim) // --> this is where we are at
+
+    console.log(claim)
+
+    // var req_field = req.query.claim
+    // var req_url = req.query.article
+    // var req_ip = req.ip
 
     var vc = {claim: req_field,
       url: req_url,
       ip: req_ip}
 
+    var dummyClaim = {claim: 'req_field',
+      url: 'req_url',
+      ip: 'req_ip'}
+
     console.log('------------------------------')
     console.log('           BEGIN')
     console.log('------------------------------ \n\n\n')
 
-    handleVerification(req_url, vc)
+    handleVerification(req_url, dummyClaim)
             .then(value => {
               console.log('------------------------------')
               console.log('           END')
