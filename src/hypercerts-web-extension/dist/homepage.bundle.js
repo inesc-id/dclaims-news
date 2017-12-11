@@ -485,6 +485,7 @@ _exports.newClaim = function (issuerId, articleId, category, freeText) {
   thisClaim.issuer = issuerId;
   thisClaim.claim.id = articleId;
   thisClaim.claim.freeText = freeText;
+  thisClaim.claim.category = category;
 
   return thisClaim;
 };
@@ -684,8 +685,8 @@ function displayClaims(claimBodyId, cleanList) {
   for (var i = 0; i < cleanList.length; i++) {
     // console.log(cleanList[i])
     var st1 = '  CLAIM #' + (i + 1);
-    var st2 = 'Text: \n' + cleanList[i]['claim'];
-    var st3 = 'User: ' + cleanList[i]['ip'];
+    var st2 = 'Category: \n' + cleanList[i].claim.category;
+    var st3 = 'User: ' + cleanList[i].issuer;
 
     txt += '<p class="claimtitle">' + st1 + '</p>' + '<p class="claimbody">' + st2 + '</p>' + '<p class="claimuser">' + st3 + '</p>';
   }

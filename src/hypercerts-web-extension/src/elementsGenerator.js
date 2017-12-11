@@ -21,6 +21,10 @@ function claimsCategoriesHTML () {
   return html
 }
 
+exports.getClaimsCategories = function () {
+  return claimsCategories
+}
+
 exports.createViewReviewsModal = function (title, claimBodyId) {
   var html = ''
   html += "  <div class='modal-dialog'>"

@@ -485,6 +485,7 @@ _exports.newClaim = function (issuerId, articleId, category, freeText) {
   thisClaim.issuer = issuerId;
   thisClaim.claim.id = articleId;
   thisClaim.claim.freeText = freeText;
+  thisClaim.claim.category = category;
 
   return thisClaim;
 };
@@ -703,9 +704,9 @@ function sendMessage(claimCategory, userId, freeText) {
 
   var claim = claimCategory;
   // (issuerId, articleId, category, freeText)
-  var newClaim = _newsClaims2.default.newClaim(userId, articleId, claimCategory, freeText);
-  console.log(JSON.stringify(newClaim));
-  var request = serverAddress + 'verify?claim=' + claim + '&article=' + articleId;
+  var newClaim = JSON.stringify(_newsClaims2.default.newClaim(userId, articleId, claimCategory, freeText));
+
+  var request = serverAddress + 'verify?claim=' + newClaim + '&article=' + articleId;
   xhr.open('GET', request);
   xhr.setRequestHeader('content-type', 'application/javascript');
 

@@ -35,6 +35,7 @@ exports.newClaim = function (issuerId, articleId, category, freeText) {
   thisClaim.issuer = issuerId
   thisClaim.claim.id = articleId
   thisClaim.claim.freeText = freeText
+  thisClaim.claim.category = category
 
   return thisClaim
 }
