@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 9);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -357,6 +357,18 @@ window.location.href.toString().includes("campus-community")
 
 var _exports = module.exports = {};
 
+var claimsCategories = ['Fake News', 'Satire', 'Extreme Bias', 'Conspiracy Theory', 'State News', 'Junk Science', 'Clickbait'];
+
+function claimsCategoriesHTML() {
+  var html = '';
+
+  for (var i = 0; i < claimsCategories.length; i++) {
+    html += "<option value='" + claimsCategories[i] + "'>" + claimsCategories[i] + '</option>';
+  }
+
+  return html;
+}
+
 _exports.createViewReviewsModal = function (title, claimBodyId) {
   var html = '';
   html += "  <div class='modal-dialog'>";
@@ -392,8 +404,17 @@ _exports.createClaimModal = function (funcCall) {
   html += "           <div class='modal-body'>";
   html += '             <form>';
   html += "               <div class='form-group'>";
+  html += "                 <label for='name'>ID:</label>";
+  html += "                 <input type='text' class='form-control' id='claim-modal-userId'>";
   html += "                 <label for='claim'>Claim:</label>";
   html += "                 <input type='text' class='form-control' id='claim'>";
+  html += "                 <label for='freeText'>Free Text:</label>";
+  html += "                 <input type='text' class='form-control' id='claim-modal-freeText'>";
+  html += "                 <div class='styled-select slate'>";
+  html += '                   <select id ="claim-modal-claim-category">';
+  html += claimsCategoriesHTML();
+  html += '                   </select';
+  html += '                 </div>';
   html += '               </div>';
   html += "               <button type='button' class='btn btn-default' onclick=" + funcCall + '>Submit</button>';
   html += "               <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>";
@@ -430,6 +451,186 @@ module.exports = {"_serverAddress":"http://146.193.41.153:8092/","serverAddress"
 "use strict";
 
 
+var uuidv4 = __webpack_require__(5);
+var HYPERCERTS_NAMESPACE = 'hypercerts-news';
+
+var _exports = module.exports;
+
+var defaultClaim = {
+  id: 'claim_id',
+  type: ['hypercerts_news_claim'],
+  issuer: 'issuer_id',
+  issued: 'yyyy-mm-dd',
+  claim: {
+    id: 'article_id',
+    category: 'one_from_the_list',
+    freeText: 'something'
+  },
+  revocation: {
+    id: 'articleId',
+    type: 'SimpleRevocationList2017'
+  },
+  signature: {
+    type: 'something',
+    created: 'timestamp',
+    creator: 'someone',
+    domain: 'something',
+    nonce: '1234',
+    signatureValue: 'signature'
+  }
+};
+
+_exports.newClaim = function (issuerId, articleId, category, freeText) {
+  var thisClaim = defaultClaim;
+
+  thisClaim.id = HYPERCERTS_NAMESPACE + '-' + uuidv4();
+  thisClaim.issuer = issuerId;
+  thisClaim.claim.id = articleId;
+  thisClaim.claim.freeText = freeText;
+
+  return thisClaim;
+};
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var rng = __webpack_require__(6);
+var bytesToUuid = __webpack_require__(8);
+
+function v4(options, buf, offset) {
+  var i = buf && offset || 0;
+
+  if (typeof options == 'string') {
+    buf = options == 'binary' ? new Array(16) : null;
+    options = null;
+  }
+  options = options || {};
+
+  var rnds = options.random || (options.rng || rng)();
+
+  // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
+  rnds[6] = rnds[6] & 0x0f | 0x40;
+  rnds[8] = rnds[8] & 0x3f | 0x80;
+
+  // Copy bytes to buffer, if provided
+  if (buf) {
+    for (var ii = 0; ii < 16; ++ii) {
+      buf[i + ii] = rnds[ii];
+    }
+  }
+
+  return buf || bytesToUuid(rnds);
+}
+
+module.exports = v4;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {
+
+// Unique ID creation requires a high quality random # generator.  In the
+// browser this is a little complicated due to unknown quality of Math.random()
+// and inconsistent support for the `crypto` API.  We do the best we can via
+// feature-detection
+var rng;
+
+var crypto = global.crypto || global.msCrypto; // for IE 11
+if (crypto && crypto.getRandomValues) {
+  // WHATWG crypto RNG - http://wiki.whatwg.org/wiki/Crypto
+  var rnds8 = new Uint8Array(16); // eslint-disable-line no-undef
+  rng = function whatwgRNG() {
+    crypto.getRandomValues(rnds8);
+    return rnds8;
+  };
+}
+
+if (!rng) {
+  // Math.random()-based (RNG)
+  //
+  // If all else fails, use Math.random().  It's fast, but is of unspecified
+  // quality.
+  var rnds = new Array(16);
+  rng = function rng() {
+    for (var i = 0, r; i < 16; i++) {
+      if ((i & 0x03) === 0) r = Math.random() * 0x100000000;
+      rnds[i] = r >>> ((i & 0x03) << 3) & 0xff;
+    }
+
+    return rnds;
+  };
+}
+
+module.exports = rng;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var g;
+
+// This works in non-strict mode
+g = function () {
+	return this;
+}();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1, eval)("this");
+} catch (e) {
+	// This works if the window reference is available
+	if ((typeof window === "undefined" ? "undefined" : _typeof(window)) === "object") g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Convert array of 16 byte values to UUID string format of the form:
+ * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+ */
+var byteToHex = [];
+for (var i = 0; i < 256; ++i) {
+  byteToHex[i] = (i + 0x100).toString(16).substr(1);
+}
+
+function bytesToUuid(buf, offset) {
+  var i = offset || 0;
+  var bth = byteToHex;
+  return bth[buf[i++]] + bth[buf[i++]] + bth[buf[i++]] + bth[buf[i++]] + '-' + bth[buf[i++]] + bth[buf[i++]] + '-' + bth[buf[i++]] + bth[buf[i++]] + '-' + bth[buf[i++]] + bth[buf[i++]] + '-' + bth[buf[i++]] + bth[buf[i++]] + bth[buf[i++]] + bth[buf[i++]] + bth[buf[i++]] + bth[buf[i++]];
+}
+
+module.exports = bytesToUuid;
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 var _sha = __webpack_require__(0);
 
 var _sha2 = _interopRequireDefault(_sha);
@@ -445,6 +646,10 @@ var _elementsGenerator2 = _interopRequireDefault(_elementsGenerator);
 var _serverConfig = __webpack_require__(3);
 
 var _serverConfig2 = _interopRequireDefault(_serverConfig);
+
+var _newsClaims = __webpack_require__(4);
+
+var _newsClaims2 = _interopRequireDefault(_newsClaims);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

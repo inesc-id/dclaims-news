@@ -1,0 +1,22 @@
+{
+    "id": "claim_id",
+    "type": ["hypercerts_news_claim"],
+    "issuer": "issuer_id",
+    "issued": "yyyy-mm-dd",
+    "claim": {
+      "id": "article_id",
+      "description":"kk",
+    },
+    "revocation": {
+      "id": "http://example.gov/revocations/738",
+      "type": "SimpleRevocationList2017"
+    },
+    "signature": {
+      "type": "LinkedDataSignature2015",
+      "created": "2016-06-18T21:19:10Z",
+      "creator": "https://example.com/jdoe/keys/1",
+      "domain": "json-ld.org",
+      "nonce": "598c63d6",
+      "signatureValue": "BavEllPXr9Cky6Ed+W3JT24="
+    }
+  }

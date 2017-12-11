@@ -1,9 +1,10 @@
 import Sha256 from './sha256.js'
 import NewsParser from './hypercertsParser.js'
 import ElementsGenerator from './elementsGenerator'
-import serverConfig from './serverConfig.json'
+import ServerConfig from './serverConfig.json'
+import NewsClaims from './newsClaims.js'
 
-var serverAddress = serverConfig['serverAddress']
+var serverAddress = ServerConfig['serverAddress']
 
 function clickClaims (articleId) {
   console.log('Opened claims')

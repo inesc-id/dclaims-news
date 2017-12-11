@@ -2,6 +2,7 @@ import Sha256 from './sha256.js'
 import NewsParser from './hypercertsParser.js'
 import ElementsGenerator from './elementsGenerator'
 import serverConfig from './serverConfig.json'
+import NewsClaims from './newsClaims.js'
 
 var serverAddress = serverConfig['serverAddress']
 
@@ -32,14 +33,14 @@ function createGenerateClaimModal () {
 
   var articleIdS = 'clickClaims("' + articleId + '")'
 
-  var funcCall = 'sendMessage(document.getElementById("claim").value)'
+  var funcCall = 'sendMessage(document.getElementById("claim").value,document.getElementById("claim-modal-userId").value,document.getElementById("claim-modal-freeText").value)'
 
   modalDiv.innerHTML = ElementsGenerator.createClaimModal(funcCall)
 
   document.body.appendChild(modalDiv)
 }
 
-function sendMessage (name) {
+function sendMessage (claimCategory, userId, freeText) {
   var data = null
 
   var xhr = new XMLHttpRequest()
@@ -52,7 +53,9 @@ function sendMessage (name) {
     }
   })
 
-  var claim = name
+  var claim = claimCategory
+  // (issuerId, articleId, category, freeText)
+  var newClaim = NewsClaims.newClaim(userId, articleId, claimCategory, freeText)
   var request = serverAddress + 'verify?claim=' + claim + '&article=' + articleId
   xhr.open('GET', request)
   xhr.setRequestHeader('content-type', 'application/javascript')

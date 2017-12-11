@@ -20,6 +20,7 @@
     "node-persist": "^2.1.0",
     "promise": "^8.0.1",
     "unique-filename": "^1.1.0",
+    "uuid": "^3.1.0",
     "xmlhttprequest": "^1.8.0"
   },
   "standard": {
