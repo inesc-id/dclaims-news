@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "webpack": "webpack",
-    "start": "http-server"
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
