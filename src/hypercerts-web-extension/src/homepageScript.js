@@ -1,9 +1,10 @@
 import Sha256 from './sha256.js'
 import NewsParser from './hypercertsParser.js'
 import ElementsGenerator from './elementsGenerator'
-import serverConfig from './serverConfig.json'
+import ServerConfig from './serverConfig.json'
+import NewsClaims from './newsClaims.js'
 
-var serverAddress = serverConfig['serverAddress']
+var serverAddress = ServerConfig['serverAddress']
 
 function clickClaims (articleId) {
   console.log('Opened claims')
@@ -18,7 +19,7 @@ function clickClaims (articleId) {
       var claims = JSON.parse(this.response)
 
       var cleanList = claims['claimsList'][1]
-      displayClaims(claimBodyId, cleanList)
+      displayAllClaims(claimBodyId, cleanList)
     }
   })
 
@@ -30,14 +31,29 @@ function clickClaims (articleId) {
 }
 window.clickClaims = clickClaims
 
-function displayClaims (claimBodyId, cleanList) {
+function displayClaimsDigest (claimBodyId, cleanList) {
   var txt = '<div class="container">'
 
   for (let i = 0; i < cleanList.length; i++) {
                 // console.log(cleanList[i])
     let st1 = '  CLAIM #' + (i + 1)
-    let st2 = 'Text: \n' + cleanList[i]['claim']
-    let st3 = 'User: ' + cleanList[i]['ip']
+    let st2 = 'Category: \n' + cleanList[i].claim.category
+    let st3 = 'User: ' + cleanList[i].issuer
+
+    txt += '<p class="claimtitle">' + st1 + '</p>' + '<p class="claimbody">' + st2 + '</p>' + '<p class="claimuser">' + st3 + '</p>'
+  }
+  txt += '</div>'
+  document.getElementById(claimBodyId).innerHTML = txt
+}
+
+function displayAllClaims (claimBodyId, cleanList) {
+  var txt = '<div class="container">'
+
+  for (let i = 0; i < cleanList.length; i++) {
+                // console.log(cleanList[i])
+    let st1 = '  CLAIM #' + (i + 1)
+    let st2 = 'Category: \n' + cleanList[i].claim.category
+    let st3 = 'User: ' + cleanList[i].issuer
 
     txt += '<p class="claimtitle">' + st1 + '</p>' + '<p class="claimbody">' + st2 + '</p>' + '<p class="claimuser">' + st3 + '</p>'
   }

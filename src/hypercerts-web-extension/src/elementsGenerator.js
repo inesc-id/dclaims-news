@@ -1,5 +1,30 @@
 var exports = module.exports = {}
 
+var claimsCategories =
+  [
+    'Fake News',
+    'Satire',
+    'Extreme Bias',
+    'Conspiracy Theory',
+    'State News',
+    'Junk Science',
+    'Clickbait'
+  ]
+
+function claimsCategoriesHTML () {
+  var html = ''
+
+  for (var i = 0; i < claimsCategories.length; i++) {
+    html += "<option value='" + claimsCategories[i] + "'>" + claimsCategories[i] + '</option>'
+  }
+
+  return html
+}
+
+exports.getClaimsCategories = function () {
+  return claimsCategories
+}
+
 exports.createViewReviewsModal = function (title, claimBodyId) {
   var html = ''
   html += "  <div class='modal-dialog'>"
@@ -35,8 +60,15 @@ exports.createClaimModal = function (funcCall) {
   html += "           <div class='modal-body'>"
   html += '             <form>'
   html += "               <div class='form-group'>"
-  html += "                 <label for='claim'>Claim:</label>"
-  html += "                 <input type='text' class='form-control' id='claim'>"
+  html += "                 <label for='name'>ID:</label>"
+  html += "                 <input type='text' class='form-control' id='claim-modal-userId'>"
+  html += "                 <label for='freeText'>Free Text:</label>"
+  html += "                 <input type='text' class='form-control' id='claim-modal-freeText'>"
+  html += "                 <div class='styled-select slate'>"
+  html += '                   <select id ="claim">'
+  html += claimsCategoriesHTML()
+  html += '                   </select'
+  html += '                 </div>'
   html += '               </div>'
   html += "               <button type='button' class='btn btn-default' onclick=" + funcCall + '>Submit</button>'
   html += "               <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>"
