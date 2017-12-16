@@ -1,34 +1,26 @@
 import Sha256 from './sha256.js'
 import NewsParser from './hypercertsParser.js'
 import ElementsGenerator from './elementsGenerator'
-import ServerConfig from './serverConfig.json'
+// import ServerConfig from './serverConfig.json'
 import NewsClaims from './newsClaims.js'
+import Hypercerts from './core/hc-core.js'
 
-var serverAddress = ServerConfig['serverAddress']
+import sha3 from 'solidity-sha3'
 
 function clickClaims (articleId) {
   console.log('Opened claims')
   var claimBodyId = 'modal-claim-body-' + articleId
   document.getElementById(claimBodyId).innerHTML = "There are no claims about this article's title yet. Open the article and be the first!"
-  var data = null
-  var xhr = new XMLHttpRequest()
-  xhr.withCredentials = false
 
-  xhr.addEventListener('readystatechange', function () {
-    if (this.readyState === 4) {
-      var claims = JSON.parse(this.response)
+  Hypercerts.getClaimsJSONByUrl(articleId).then(value => {
+    var claims = value
 
-      var cleanList = claims['claimsList'][1]
-      displayAllClaims(claimBodyId, cleanList)
-    }
+    var cleanList = claims['claimsList'][1]
+    // displayAllClaims(claimBodyId, cleanList)
+    displayClaimsDigest(claimBodyId, cleanList)
   })
-
-  var request = serverAddress + 'getclaims?article=' + articleId
-
-  xhr.open('GET', request)
-  xhr.setRequestHeader('content-type', 'application/javascript')
-  xhr.send(data)
 }
+
 window.clickClaims = clickClaims
 
 function displayClaimsDigest (claimBodyId, cleanList) {
@@ -66,7 +58,8 @@ function titles () {
   for (var item of list) {
     var strippedTitle = item.innerText.replace(/\W/g, '').toLowerCase()
     //
-    var encrypted = Sha256.hash(strippedTitle)
+    // var encrypted = Sha256.hash(strippedTitle)
+    var encrypted = sha3(strippedTitle)
   }
 }
 
@@ -99,23 +92,13 @@ function createViewClaimsModals (articleId, title) {
 }
 
 function setBadgeCount (articleId) {
-  var data = null
-  var xhr = new XMLHttpRequest()
-  xhr.withCredentials = false
   var badgeId = 'span-button-' + articleId
 
-  xhr.addEventListener('readystatechange', function () {
-    if (this.readyState === 4) {
-      var number = this.response.toString()
-      console.log('Server response:    ' + number)
-      document.getElementById(badgeId).innerHTML = number
-    }
+  Hypercerts.getClaimsCountsJSONByUrl(articleId).then(value => {
+    var claimsCount = value.toString()
+    console.log('Server response:    ' + claimsCount)
+    document.getElementById(badgeId).innerHTML = claimsCount
   })
-  var request = serverAddress + 'getcount?article=' + articleId
-
-  xhr.open('GET', request)
-  xhr.setRequestHeader('content-type', 'application/javascript')
-  xhr.send(data)
 }
 
 function allElements () {
@@ -125,7 +108,8 @@ function allElements () {
     var title = NewsParser.getTitleElement(list[i])
 
     var strippedTitle = NewsParser.cleanTitle(title)
-    var articleId = Sha256.hash(strippedTitle)
+    // var articleId = Sha256.hash(strippedTitle)
+    var articleId = sha3(strippedTitle)
 
     // Buttons
     createViewClaimsButton(articleId, list[i])

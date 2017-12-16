@@ -25,5 +25,8 @@
    stats: {
      colors: true
    },
+   externals: [{
+     xmlhttprequest: '{XMLHttpRequest:XMLHttpRequest}'
+   }],
    devtool: 'source-map'
  }
