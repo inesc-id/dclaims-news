@@ -1,4 +1,4 @@
-var ipfsStorage = require('./ipfsstorage.js')
+var Storage = require('./storage.js')
 
 var exports = module.exports
 
@@ -7,7 +7,7 @@ exports.handleVerification = function (nkey, newClaim) {
     var newClaimArray = []
     newClaimArray.push(newClaim)
 
-    ipfsStorage.getItem(nkey).then(value => {
+    Storage.getItem(nkey).then(value => {
       var newClaimsList
       if (value) {
         console.log('Appending...')
@@ -16,7 +16,7 @@ exports.handleVerification = function (nkey, newClaim) {
         console.log('Creating new list')
         newClaimsList = newClaimArray
       }
-      return ipfsStorage.addItem(nkey, newClaimsList)
+      return Storage.addItem(nkey, newClaimsList)
     }).then(value => {
       console.log('Sucess \n' + value)
       fulfill('Sucess :)')
@@ -26,7 +26,7 @@ exports.handleVerification = function (nkey, newClaim) {
 
 exports.getClaimsJSONByUrl = function (url) {
   return new Promise(function (fulfill, reject) {
-    ipfsStorage.getItem(url).then(value => {
+    Storage.getItem(url).then(value => {
       var claimsJSON = {}
       claimsJSON.claimsList = value
       fulfill(claimsJSON)
@@ -36,7 +36,7 @@ exports.getClaimsJSONByUrl = function (url) {
 
 exports.getClaimsCountsJSONByUrl = function (url) {
   return new Promise(function (fulfill, reject) {
-    ipfsStorage.getItem(url).then(values => {
+    Storage.getItem(url).then(values => {
       if (values) {
         fulfill(values[1].length)
                 // fulfill("3")

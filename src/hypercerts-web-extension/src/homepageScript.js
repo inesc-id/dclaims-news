@@ -1,7 +1,5 @@
-import Sha256 from './sha256.js'
 import NewsParser from './hypercertsParser.js'
 import ElementsGenerator from './elementsGenerator'
-// import ServerConfig from './serverConfig.json'
 import NewsClaims from './newsClaims.js'
 import Hypercerts from './core/hc-core.js'
 
@@ -16,7 +14,6 @@ function clickClaims (articleId) {
     var claims = value
 
     var cleanList = claims['claimsList'][1]
-    // displayAllClaims(claimBodyId, cleanList)
     displayClaimsDigest(claimBodyId, cleanList)
   })
 }
@@ -27,7 +24,6 @@ function displayClaimsDigest (claimBodyId, cleanList) {
   var txt = '<div class="container">'
 
   for (let i = 0; i < cleanList.length; i++) {
-                // console.log(cleanList[i])
     let st1 = '  CLAIM #' + (i + 1)
     let st2 = 'Category: \n' + cleanList[i].claim.category
     let st3 = 'User: ' + cleanList[i].issuer
@@ -58,7 +54,6 @@ function titles () {
   for (var item of list) {
     var strippedTitle = item.innerText.replace(/\W/g, '').toLowerCase()
     //
-    // var encrypted = Sha256.hash(strippedTitle)
     var encrypted = sha3(strippedTitle)
   }
 }
@@ -108,7 +103,6 @@ function allElements () {
     var title = NewsParser.getTitleElement(list[i])
 
     var strippedTitle = NewsParser.cleanTitle(title)
-    // var articleId = Sha256.hash(strippedTitle)
     var articleId = sha3(strippedTitle)
 
     // Buttons

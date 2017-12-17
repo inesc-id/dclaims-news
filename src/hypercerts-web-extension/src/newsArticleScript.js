@@ -1,19 +1,14 @@
-import Sha256 from './sha256.js'
 import NewsParser from './hypercertsParser.js'
 import ElementsGenerator from './elementsGenerator'
-import serverConfig from './serverConfig.json'
 import NewsClaims from './newsClaims.js'
 import Hypercerts from './core/hc-core.js'
 import sha3 from 'solidity-sha3'
-
-var serverAddress = serverConfig['serverAddress']
 
 var articleId = ''
 
 function generateArticleId () {
   var title = NewsParser.getTitleElement(document)
   var strippedTitle = title.replace(/\W/g, '').toLowerCase()
-  // articleId = Sha256.hash(strippedTitle)
   articleId = sha3(strippedTitle)
 }
 
