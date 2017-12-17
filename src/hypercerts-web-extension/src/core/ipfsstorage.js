@@ -1,15 +1,23 @@
 'use strict'
 var Promise = require('promise')
-var ipfsAPI = require('ipfs-api')
-// var uniqueFilename = require('unique-filename')
+
 var Buffer = require('buffer/').Buffer
 
-// var fs = require('fs')
 var blockchainAPI = require('./ethereumAPI.js')
 
 var exports = module.exports = {}
 
-var ipfs = ipfsAPI('localhost', '5001', {protocol: 'http'})
+/*
+if (!window.ipfs) {
+  var ipfsAPI = require('ipfs-api')
+  var ipfs = ipfsAPI('localhost', '5001', {protocol: 'http'})
+} else {
+  var ipfs = window.ipfs
+}
+*/
+var ipfsAPI = require('ipfs-api')
+// var ipfs = ipfsAPI('localhost', '5001', {protocol: 'http'})
+var ipfs = ipfsAPI('/ip4/127.0.0.1/tcp/5001')
 
 // var claimsListPath = 'claims/'
 // var claimsListFileName = 'claimsList.json'
