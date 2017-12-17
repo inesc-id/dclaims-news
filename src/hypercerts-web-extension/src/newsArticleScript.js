@@ -1,17 +1,15 @@
-import Sha256 from './sha256.js'
 import NewsParser from './hypercertsParser.js'
 import ElementsGenerator from './elementsGenerator'
-import serverConfig from './serverConfig.json'
 import NewsClaims from './newsClaims.js'
-
-var serverAddress = serverConfig['serverAddress']
+import Hypercerts from './core/hc-core.js'
+import sha3 from 'solidity-sha3'
 
 var articleId = ''
 
 function generateArticleId () {
   var title = NewsParser.getTitleElement(document)
   var strippedTitle = title.replace(/\W/g, '').toLowerCase()
-  articleId = Sha256.hash(strippedTitle)
+  articleId = sha3(strippedTitle)
 }
 
 function createGenerateClaimButton () {
@@ -41,27 +39,13 @@ function createGenerateClaimModal () {
 }
 
 function sendMessage (claimCategory, userId, freeText) {
-  var data = null
-
-  var xhr = new XMLHttpRequest()
-  xhr.withCredentials = false
-
-  xhr.addEventListener('readystatechange', function () {
-    if (this.readyState === 4) {
-      alert(this.responseText)
-      console.log(this.response)
-    }
-  })
-
-  var claim = claimCategory
   // (issuerId, articleId, category, freeText)
-  var newClaim = JSON.stringify(NewsClaims.newClaim(userId, articleId, claimCategory, freeText))
+  var newClaim = NewsClaims.newClaim(userId, articleId, claimCategory, freeText)
 
-  var request = serverAddress + 'verify?claim=' + newClaim + '&article=' + articleId
-  xhr.open('GET', request)
-  xhr.setRequestHeader('content-type', 'application/javascript')
-
-  xhr.send(data)
+  Hypercerts.handleVerification(articleId, newClaim).then(value => {
+    alert(value.toString())
+    console.log(value.toString())
+  })
 }
 
 window.sendMessage = sendMessage
