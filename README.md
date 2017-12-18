@@ -27,7 +27,6 @@ Using the Hypercerts-Web-Extension users can generate claims  (whose authenticit
 
 ## Project Structure
 Hypercerts is made of three main components. Hypercerts-Web-Extension, Hypercerts-Core and Hypercerts-Ethereum.
-![](https://github.com/inesc-id/hypercerts-pm/blob/master/images/hc-arch2.jpg?raw=true)
 
 ## Usage
 #### 1. Install and configure IPFS
