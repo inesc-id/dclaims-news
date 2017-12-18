@@ -32917,7 +32917,7 @@ _exports.createClaimModal = function (funcCall) {
   html += "           <div class='modal-body'>";
   html += '             <form>';
   html += "               <div class='form-group'>";
-  html += "                 <label for='name'>ID:</label>";
+  html += "                 <label for='name' id='claim-modal-userId-label'>ID:</label>";
   html += "                 <input type='text' class='form-control' id='claim-modal-userId'>";
   html += "                 <label for='freeText'>Free Text:</label>";
   html += "                 <input type='text' class='form-control' id='claim-modal-freeText'>";
@@ -32943,7 +32943,7 @@ _exports.createGenerateClaimButton = function (articleId) {
   var html = '';
 
   html += "            <div class='row'>";
-  html += "              <button type='button' class='btn btn-info btn-lg' data-toggle='modal' data-target='#generate-claim-modal-" + articleId + "'>Contest the Title</button>";
+  html += "              <button type='button' onclick='updateUserId()' class='btn btn-info btn-lg' data-toggle='modal' data-target='#generate-claim-modal-" + articleId + "'>Contest the Title</button>";
   html += '            </div>';
 
   return html;
@@ -33182,6 +33182,12 @@ _exports.getClaimsCountsJSONByUrl = function (url) {
   });
 };
 
+_exports.getUserId = function () {
+  return new Promise(function (resolve, reject) {
+    Storage.getUserId().then(resolve);
+  });
+};
+
 /***/ }),
 /* 215 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -33318,6 +33324,12 @@ _exports.getClaimsCount = function (key) {
   });
 };
 
+_exports.getUserId = function () {
+  return new Promise(function (resolve, reject) {
+    Ethereum.getUserId().then(resolve);
+  });
+};
+
 /*
 console.log('NOOOOOODE TEEEEEEST')
 getClaimsListFromIpfs('0x9407ee04677edd116c67e86ffb8dbae6e4c199a692fe820ce35a27f600f90b0c').then(result => {
@@ -33326,6 +33338,8 @@ getClaimsListFromIpfs('0x9407ee04677edd116c67e86ffb8dbae6e4c199a692fe820ce35a27f
   console.log('*** End of the test')
 })
 */
+
+// exports.getUserId().then(value => { console.log('USER ID:   ' + value) })
 
 /***/ }),
 /* 216 */
@@ -34069,7 +34083,8 @@ var ABI = [{
 }];
 
 // const CONTRACT_ADDRESS = '0x40a45F57D67ce54F19dD1f6b3b9F723b4eE6Ff30'
-var CONTRACT_ADDRESS = '0x22913e635e15356dfdb3ef50806fd58154464b7a';
+// const CONTRACT_ADDRESS = '0x22913e635e15356dfdb3ef50806fd58154464b7a'
+var CONTRACT_ADDRESS = '0x53abb1d321dd254eff936f0caee94effd4e10621';
 
 if (typeof web3 !== 'undefined') {
   web3 = new Web3(web3.currentProvider);
@@ -34176,6 +34191,12 @@ exports.issueClaim = function (key, ipfsLink) {
         reject(error);
       }
     });
+  });
+};
+
+exports.getUserId = function () {
+  return new Promise(function (resolve, reject) {
+    resolve(web3.eth.accounts[0]);
   });
 };
 
@@ -80467,6 +80488,10 @@ var _soliditySha2 = _interopRequireDefault(_soliditySha);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var TRUSTLIST = ['0x64810cefb991351b323e8a970cda57e07ecbad30'];
+
+var TRUSTLIST_ACTIVE = true;
+
 function clickClaims(articleId) {
   console.log('Opened claims');
   var claimBodyId = 'modal-claim-body-' + articleId;
@@ -80486,6 +80511,12 @@ function displayClaimsDigest(claimBodyId, cleanList) {
   var txt = '<div class="container">';
 
   for (var i = 0; i < cleanList.length; i++) {
+    if (TRUSTLIST_ACTIVE) {
+      if (TRUSTLIST.indexOf(cleanList[i].issuer) == -1) {
+        continue;
+      }
+    }
+
     var st1 = '  CLAIM #' + (i + 1);
     var st2 = 'Category: \n' + cleanList[i].claim.category;
     var st3 = 'User: ' + cleanList[i].issuer;

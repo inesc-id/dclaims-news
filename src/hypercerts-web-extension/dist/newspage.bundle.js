@@ -32917,7 +32917,7 @@ _exports.createClaimModal = function (funcCall) {
   html += "           <div class='modal-body'>";
   html += '             <form>';
   html += "               <div class='form-group'>";
-  html += "                 <label for='name'>ID:</label>";
+  html += "                 <label for='name' id='claim-modal-userId-label'>ID:</label>";
   html += "                 <input type='text' class='form-control' id='claim-modal-userId'>";
   html += "                 <label for='freeText'>Free Text:</label>";
   html += "                 <input type='text' class='form-control' id='claim-modal-freeText'>";
@@ -32943,7 +32943,7 @@ _exports.createGenerateClaimButton = function (articleId) {
   var html = '';
 
   html += "            <div class='row'>";
-  html += "              <button type='button' class='btn btn-info btn-lg' data-toggle='modal' data-target='#generate-claim-modal-" + articleId + "'>Contest the Title</button>";
+  html += "              <button type='button' onclick='updateUserId()' class='btn btn-info btn-lg' data-toggle='modal' data-target='#generate-claim-modal-" + articleId + "'>Contest the Title</button>";
   html += '            </div>';
 
   return html;
@@ -33182,6 +33182,12 @@ _exports.getClaimsCountsJSONByUrl = function (url) {
   });
 };
 
+_exports.getUserId = function () {
+  return new Promise(function (resolve, reject) {
+    Storage.getUserId().then(resolve);
+  });
+};
+
 /***/ }),
 /* 215 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -33318,6 +33324,12 @@ _exports.getClaimsCount = function (key) {
   });
 };
 
+_exports.getUserId = function () {
+  return new Promise(function (resolve, reject) {
+    Ethereum.getUserId().then(resolve);
+  });
+};
+
 /*
 console.log('NOOOOOODE TEEEEEEST')
 getClaimsListFromIpfs('0x9407ee04677edd116c67e86ffb8dbae6e4c199a692fe820ce35a27f600f90b0c').then(result => {
@@ -33326,6 +33338,8 @@ getClaimsListFromIpfs('0x9407ee04677edd116c67e86ffb8dbae6e4c199a692fe820ce35a27f
   console.log('*** End of the test')
 })
 */
+
+// exports.getUserId().then(value => { console.log('USER ID:   ' + value) })
 
 /***/ }),
 /* 216 */
@@ -34069,7 +34083,8 @@ var ABI = [{
 }];
 
 // const CONTRACT_ADDRESS = '0x40a45F57D67ce54F19dD1f6b3b9F723b4eE6Ff30'
-var CONTRACT_ADDRESS = '0x22913e635e15356dfdb3ef50806fd58154464b7a';
+// const CONTRACT_ADDRESS = '0x22913e635e15356dfdb3ef50806fd58154464b7a'
+var CONTRACT_ADDRESS = '0x53abb1d321dd254eff936f0caee94effd4e10621';
 
 if (typeof web3 !== 'undefined') {
   web3 = new Web3(web3.currentProvider);
@@ -34176,6 +34191,12 @@ exports.issueClaim = function (key, ipfsLink) {
         reject(error);
       }
     });
+  });
+};
+
+exports.getUserId = function () {
+  return new Promise(function (resolve, reject) {
+    resolve(web3.eth.accounts[0]);
   });
 };
 
@@ -80469,40 +80490,54 @@ var _soliditySha2 = _interopRequireDefault(_soliditySha);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var articleId = '';
+var userId = null;
+
+function setUserId(id) {
+  userId = id;
+}
 
 function generateArticleId() {
-  var title = _hypercertsParser2.default.getTitleElement(document);
-  var strippedTitle = title.replace(/\W/g, '').toLowerCase();
-  articleId = (0, _soliditySha2.default)(strippedTitle);
+  return new Promise(function (resolve, reject) {
+    var title = _hypercertsParser2.default.getTitleElement(document);
+    var strippedTitle = title.replace(/\W/g, '').toLowerCase();
+    articleId = (0, _soliditySha2.default)(strippedTitle);
+    resolve();
+    // Hypercerts.getUserId().then(setUserId).then(resolve)
+  });
 }
 
 function createGenerateClaimButton() {
-  var buttonDiv = document.createElement('div');
-  var buttonDivId = 'generate-claim-button' + articleId;
-  buttonDiv.id = buttonDivId;
-  buttonDiv.class = 'container';
-  document.getElementsByTagName('article')[0].appendChild(buttonDiv);
+  return new Promise(function (resolve, reject) {
+    var buttonDiv = document.createElement('div');
+    var buttonDivId = 'generate-claim-button' + articleId;
+    buttonDiv.id = buttonDivId;
+    buttonDiv.class = 'container';
+    document.getElementsByTagName('article')[0].appendChild(buttonDiv);
 
-  document.getElementById(buttonDivId).innerHTML = _elementsGenerator2.default.createGenerateClaimButton(articleId);
+    document.getElementById(buttonDivId).innerHTML = _elementsGenerator2.default.createGenerateClaimButton(articleId);
+    resolve();
+  });
 }
 
 function createGenerateClaimModal() {
-  var modalDiv = document.createElement('div');
-  var modalId = 'generate-claim-modal-' + articleId;
-  modalDiv.id = modalId;
-  modalDiv.setAttribute('class', 'modal fade');
-  modalDiv.setAttribute('role', 'dialog');
+  return new Promise(function (resolve, reject) {
+    var modalDiv = document.createElement('div');
+    var modalId = 'generate-claim-modal-' + articleId;
+    modalDiv.id = modalId;
+    modalDiv.setAttribute('class', 'modal fade');
+    modalDiv.setAttribute('role', 'dialog');
 
-  var articleIdS = 'clickClaims("' + articleId + '")';
+    // var articleIdS = 'clickClaims("' + articleId + '")'
 
-  var funcCall = 'sendMessage(document.getElementById("claim").value,document.getElementById("claim-modal-userId").value,document.getElementById("claim-modal-freeText").value)';
+    var funcCall = 'sendMessage(document.getElementById("claim").value,document.getElementById("claim-modal-freeText").value)';
 
-  modalDiv.innerHTML = _elementsGenerator2.default.createClaimModal(funcCall);
-
-  document.body.appendChild(modalDiv);
+    modalDiv.innerHTML = _elementsGenerator2.default.createClaimModal(funcCall);
+    document.body.appendChild(modalDiv);
+    resolve();
+  });
 }
 
-function sendMessage(claimCategory, userId, freeText) {
+function sendMessage(claimCategory, freeText) {
   // (issuerId, articleId, category, freeText)
   var newClaim = _newsClaims2.default.newClaim(userId, articleId, claimCategory, freeText);
 
@@ -80513,10 +80548,13 @@ function sendMessage(claimCategory, userId, freeText) {
 }
 
 window.sendMessage = sendMessage;
+window.updateUserId = function () {
+  _hcCore2.default.getUserId().then(setUserId).then(function (value) {
+    document.getElementById('claim-modal-userId-label').innerText = userId;
+  });
+};
 
-generateArticleId();
-createGenerateClaimModal();
-createGenerateClaimButton();
+generateArticleId().then(createGenerateClaimModal).then(createGenerateClaimButton);
 
 /***/ })
 /******/ ]);

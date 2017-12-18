@@ -2,8 +2,8 @@
 var exports = module.exports = {}
 var Promise = require('promise')
 var Buffer = require('buffer/').Buffer
-var Ethereum = require('./ethereumAPI.js')
 var ipfsAPI = require('ipfs-api')
+var Ethereum = require('./ethereumAPI.js')
 var ipfs = ipfsAPI('/ip4/127.0.0.1/tcp/5001')
 
 exports.addItem = function (key, item) {
@@ -128,6 +128,12 @@ exports.getClaimsCount = function (key) {
   })
 }
 
+exports.getUserId = function () {
+  return new Promise(function (resolve, reject) {
+    Ethereum.getUserId().then(resolve)
+  })
+}
+
 /*
 console.log('NOOOOOODE TEEEEEEST')
 getClaimsListFromIpfs('0x9407ee04677edd116c67e86ffb8dbae6e4c199a692fe820ce35a27f600f90b0c').then(result => {
@@ -136,3 +142,5 @@ getClaimsListFromIpfs('0x9407ee04677edd116c67e86ffb8dbae6e4c199a692fe820ce35a27f
   console.log('*** End of the test')
 })
 */
+
+// exports.getUserId().then(value => { console.log('USER ID:   ' + value) })

@@ -2,8 +2,11 @@ import NewsParser from './hypercertsParser.js'
 import ElementsGenerator from './elementsGenerator'
 import NewsClaims from './newsClaims.js'
 import Hypercerts from './core/hc-core.js'
-
 import sha3 from 'solidity-sha3'
+
+var TRUSTLIST = ['0x64810cefb991351b323e8a970cda57e07ecbad30']
+
+var TRUSTLIST_ACTIVE = true
 
 function clickClaims (articleId) {
   console.log('Opened claims')
@@ -24,6 +27,12 @@ function displayClaimsDigest (claimBodyId, cleanList) {
   var txt = '<div class="container">'
 
   for (let i = 0; i < cleanList.length; i++) {
+    if (TRUSTLIST_ACTIVE) {
+      if (TRUSTLIST.indexOf(cleanList[i].issuer) == -1) {
+        continue
+      }
+    }
+
     let st1 = '  CLAIM #' + (i + 1)
     let st2 = 'Category: \n' + cleanList[i].claim.category
     let st3 = 'User: ' + cleanList[i].issuer

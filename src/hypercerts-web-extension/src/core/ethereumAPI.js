@@ -159,7 +159,8 @@ const ABI = [
 ]
 
 // const CONTRACT_ADDRESS = '0x40a45F57D67ce54F19dD1f6b3b9F723b4eE6Ff30'
-const CONTRACT_ADDRESS = '0x22913e635e15356dfdb3ef50806fd58154464b7a'
+// const CONTRACT_ADDRESS = '0x22913e635e15356dfdb3ef50806fd58154464b7a'
+const CONTRACT_ADDRESS = '0x53abb1d321dd254eff936f0caee94effd4e10621'
 
 if (typeof web3 !== 'undefined') {
   web3 = new Web3(web3.currentProvider)
@@ -265,5 +266,11 @@ exports.issueClaim = function (key, ipfsLink) {
         reject(error)
       }
     })
+  })
+}
+
+exports.getUserId = function () {
+  return new Promise(function (resolve, reject) {
+    resolve(web3.eth.accounts[0])
   })
 }
