@@ -33110,48 +33110,74 @@ module.exports = bytesToUuid;
 var Storage = __webpack_require__(215);
 
 var _exports = module.exports;
+/*
+exports.handleVerification = function (nkey, newClaim) {
+  return new Promise(function (fulfill, reject) {
+    var newClaimArray = []
+    newClaimArray.push(newClaim)
+
+    Storage.getItem(nkey).then(value => {
+      var newClaimsList
+      if (value) {
+        console.log('Appending...')
+        newClaimsList = value[1].concat(newClaimArray)
+      } else {
+        console.log('Creating new list')
+        newClaimsList = newClaimArray
+      }
+      return Storage.addItem(nkey, newClaimsList)
+    }).then(value => {
+      console.log('Sucess \n' + value)
+      fulfill('Sucess :)')
+    })
+  })
+} */
 
 _exports.handleVerification = function (nkey, newClaim) {
-  return new Promise(function (fulfill, reject) {
-    var newClaimArray = [];
-    newClaimArray.push(newClaim);
-
-    Storage.getItem(nkey).then(function (value) {
-      var newClaimsList;
-      if (value) {
-        console.log('Appending...');
-        newClaimsList = value[1].concat(newClaimArray);
-      } else {
-        console.log('Creating new list');
-        newClaimsList = newClaimArray;
-      }
-      return Storage.addItem(nkey, newClaimsList);
-    }).then(function (value) {
-      console.log('Sucess \n' + value);
-      fulfill('Sucess :)');
-    });
+  return new Promise(function (resolve, reject) {
+    Storage.addItem(nkey, newClaim).then(resolve);
   });
 };
 
+/*
+exports.getClaimsJSONByUrl = function (url) {
+  return new Promise(function (fulfill, reject) {
+    Storage.getItem(url).then(value => {
+      var claimsJSON = {}
+      claimsJSON.claimsList = value
+      fulfill(claimsJSON)
+    })
+  })
+}
+*/
 _exports.getClaimsJSONByUrl = function (url) {
   return new Promise(function (fulfill, reject) {
-    Storage.getItem(url).then(function (value) {
+    Storage.getClaimsListFromIpfs(url).then(function (value) {
       var claimsJSON = {};
       claimsJSON.claimsList = value;
       fulfill(claimsJSON);
     });
   });
 };
+/*
+exports.getClaimsCountsJSONByUrl = function (url) {
+  return new Promise(function (fulfill, reject) {
+    Storage.getItem(url).then(values => {
+      if (values) {
+        fulfill(values[1].length)
+                // fulfill("3")
+      } else {
+        fulfill('0')
+      }
+    })
+  })
+}
+*/
 
 _exports.getClaimsCountsJSONByUrl = function (url) {
-  return new Promise(function (fulfill, reject) {
-    Storage.getItem(url).then(function (values) {
-      if (values) {
-        fulfill(values[1].length);
-        // fulfill("3")
-      } else {
-        fulfill('0');
-      }
+  return new Promise(function (resolve, reject) {
+    Storage.getClaimsCount(url).then(function (value) {
+      return resolve(value.toString());
     });
   });
 };
@@ -33166,7 +33192,7 @@ _exports.getClaimsCountsJSONByUrl = function (url) {
 var _exports = module.exports = {};
 var Promise = __webpack_require__(216);
 var Buffer = __webpack_require__(0).Buffer;
-var blockchainAPI = __webpack_require__(226);
+var Ethereum = __webpack_require__(226);
 var ipfsAPI = __webpack_require__(227);
 var ipfs = ipfsAPI('/ip4/127.0.0.1/tcp/5001');
 
@@ -33174,8 +33200,8 @@ _exports.addItem = function (key, item) {
   console.log('Adding item');
   console.log('Key: ' + key + ' Item: ' + item.toString());
   return new Promise(function (resolve, reject) {
-    addProofsListToIPFS(Buffer.from(JSON.stringify(item))).then(function (value) {
-      storeItem(key, value).then(function (value2) {
+    addClaimToIPFS(Buffer.from(JSON.stringify(item))).then(function (value) {
+      issueClaim(key, value).then(function (value2) {
         resolve([key, item]);
       });
     });
@@ -33194,26 +33220,26 @@ _exports.getItem = function (key) {
     });
   });
 };
-
-function storeItem(key, item) {
+/*
+function issueClaim (key, item) {
   return new Promise(function (resolve, reject) {
-    blockchainAPI.storeItem(key, item).then(function (value) {
+    Ethereum.issueClaim(key, item).then(function (value) {
+      if (value) {
+        resolve([key, value])
+      } else {
+        resolve(null)
+      }
+    })
+  })
+} */
+
+function issueClaim(key, item) {
+  return new Promise(function (resolve, reject) {
+    Ethereum.issueClaim(key, item).then(function (value) {
       if (value) {
         resolve([key, value]);
       } else {
-        resolve(null);
-      }
-    });
-  });
-}
-
-function getItemFromStorage(key) {
-  return new Promise(function (resolve, reject) {
-    blockchainAPI.getItemFromStorage(key).then(function (value) {
-      if (value) {
-        resolve(value);
-      } else {
-        resolve(null);
+        reject(false);
       }
     });
   });
@@ -33222,12 +33248,10 @@ function getItemFromStorage(key) {
 function getLinkFromRegistry(key) {
   return new Promise(function (resolve, reject) {
     try {
-      getItemFromStorage(key).then(function (link) {
+      Ethereum.getItemFromStorage(key).then(function (link) {
         if (link) {
-          console.log('LINK: ' + JSON.stringify(link));
           resolve(link);
         } else {
-          console.log('No Key');
           resolve(null);
         }
       });
@@ -33238,7 +33262,7 @@ function getLinkFromRegistry(key) {
   });
 }
 
-function addProofsListToIPFS(claimsArrayBuffer) {
+function addClaimToIPFS(claimsArrayBuffer) {
   return new Promise(function (resolve, reject) {
     ipfs.files.add([claimsArrayBuffer], function (err, result) {
       if (err) {
@@ -33273,6 +33297,35 @@ function getFileFromIPFS(multihash) {
     }
   });
 }
+
+_exports.getClaimsListFromIpfs = function (key) {
+  return new Promise(function (resolve, reject) {
+    Ethereum.getClaimsList(key).then(function (metaList) {
+      var pr = [];
+      var claimsList = {};
+
+      for (var i = 0; i < metaList.length; i++) {
+        pr.push(getFileFromIPFS(metaList[i].ipfsLink));
+      }
+      Promise.all(pr).then(resolve);
+    });
+  });
+};
+
+_exports.getClaimsCount = function (key) {
+  return new Promise(function (resolve, reject) {
+    Ethereum.getClaimsListCount(key).then(resolve);
+  });
+};
+
+/*
+console.log('NOOOOOODE TEEEEEEST')
+getClaimsListFromIpfs('0x9407ee04677edd116c67e86ffb8dbae6e4c199a692fe820ce35a27f600f90b0c').then(result => {
+  console.log('*** New ipfs test')
+  console.log(result)
+  console.log('*** End of the test')
+})
+*/
 
 /***/ }),
 /* 216 */
@@ -33896,66 +33949,6 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 
 exports = module.exports;
-/*
-const ABI = [
-  {
-    'constant': true,
-    'inputs': [
-      {
-        'name': 'articleId',
-        'type': 'bytes32'
-      }
-    ],
-    'name': 'getIpfsLink',
-    'outputs': [
-      {
-        'name': '',
-        'type': 'string'
-      }
-    ],
-    'payable': false,
-    'stateMutability': 'view',
-    'type': 'function'
-  },
-  {
-    'constant': true,
-    'inputs': [
-      {
-        'name': '',
-        'type': 'bytes32'
-      }
-    ],
-    'name': 'bigList',
-    'outputs': [
-      {
-        'name': '',
-        'type': 'string'
-      }
-    ],
-    'payable': false,
-    'stateMutability': 'view',
-    'type': 'function'
-  },
-  {
-    'constant': false,
-    'inputs': [
-      {
-        'name': 'articleId',
-        'type': 'bytes32'
-      },
-      {
-        'name': 'ipfsLink',
-        'type': 'string'
-      }
-    ],
-    'name': 'setIpfsLink',
-    'outputs': [],
-    'payable': false,
-    'stateMutability': 'nonpayable',
-    'type': 'function'
-  }
-]
-*/
 
 var ABI = [{
   'constant': true,
@@ -34165,6 +34158,19 @@ exports.getItemFromStorage = function (key) {
       if (!error) {
         console.log(result);
         resolve(result);
+      } else {
+        console.error(error);
+        reject(error);
+      }
+    });
+  });
+};
+
+exports.issueClaim = function (key, ipfsLink) {
+  return new Promise(function (resolve, reject) {
+    HypercertsInstance.issueClaim(key, ipfsLink, function (error, result) {
+      if (!error) {
+        resolve(true);
       } else {
         console.error(error);
         reject(error);
@@ -80469,7 +80475,7 @@ function clickClaims(articleId) {
   _hcCore2.default.getClaimsJSONByUrl(articleId).then(function (value) {
     var claims = value;
 
-    var cleanList = claims['claimsList'][1];
+    var cleanList = claims['claimsList'];
     displayClaimsDigest(claimBodyId, cleanList);
   });
 }

@@ -13,7 +13,7 @@ function clickClaims (articleId) {
   Hypercerts.getClaimsJSONByUrl(articleId).then(value => {
     var claims = value
 
-    var cleanList = claims['claimsList'][1]
+    var cleanList = claims['claimsList']
     displayClaimsDigest(claimBodyId, cleanList)
   })
 }

@@ -2,7 +2,7 @@
 var exports = module.exports = {}
 var Promise = require('promise')
 var Buffer = require('buffer/').Buffer
-var blockchainAPI = require('./ethereumAPI.js')
+var Ethereum = require('./ethereumAPI.js')
 var ipfsAPI = require('ipfs-api')
 var ipfs = ipfsAPI('/ip4/127.0.0.1/tcp/5001')
 
@@ -10,8 +10,8 @@ exports.addItem = function (key, item) {
   console.log('Adding item')
   console.log('Key: ' + key + ' Item: ' + item.toString())
   return new Promise(function (resolve, reject) {
-    addProofsListToIPFS(Buffer.from(JSON.stringify(item))).then(value => {
-      storeItem(key, value).then(value2 => {
+    addClaimToIPFS(Buffer.from(JSON.stringify(item))).then(value => {
+      issueClaim(key, value).then(value2 => {
         resolve([key, item])
       })
     })
@@ -30,10 +30,10 @@ exports.getItem = function (key) {
     })
   })
 }
-
-function storeItem (key, item) {
+/*
+function issueClaim (key, item) {
   return new Promise(function (resolve, reject) {
-    blockchainAPI.storeItem(key, item).then(function (value) {
+    Ethereum.issueClaim(key, item).then(function (value) {
       if (value) {
         resolve([key, value])
       } else {
@@ -41,15 +41,15 @@ function storeItem (key, item) {
       }
     })
   })
-}
+} */
 
-function getItemFromStorage (key) {
+function issueClaim (key, item) {
   return new Promise(function (resolve, reject) {
-    blockchainAPI.getItemFromStorage(key).then(function (value) {
+    Ethereum.issueClaim(key, item).then(function (value) {
       if (value) {
-        resolve(value)
+        resolve([key, value])
       } else {
-        resolve(null)
+        reject(false)
       }
     })
   })
@@ -58,12 +58,10 @@ function getItemFromStorage (key) {
 function getLinkFromRegistry (key) {
   return new Promise(function (resolve, reject) {
     try {
-      getItemFromStorage(key).then(link => {
+      Ethereum.getItemFromStorage(key).then(link => {
         if (link) {
-          console.log('LINK: ' + JSON.stringify(link))
           resolve(link)
         } else {
-          console.log('No Key')
           resolve(null)
         }
       })
@@ -74,7 +72,7 @@ function getLinkFromRegistry (key) {
   })
 }
 
-function addProofsListToIPFS (claimsArrayBuffer) {
+function addClaimToIPFS (claimsArrayBuffer) {
   return new Promise(function (resolve, reject) {
     ipfs.files.add([claimsArrayBuffer], function (err, result) {
       if (err) {
@@ -109,3 +107,32 @@ function getFileFromIPFS (multihash) {
     }
   })
 }
+
+exports.getClaimsListFromIpfs = function (key) {
+  return new Promise(function (resolve, reject) {
+    Ethereum.getClaimsList(key).then(metaList => {
+      let pr = []
+      let claimsList = {}
+
+      for (let i = 0; i < metaList.length; i++) {
+        pr.push(getFileFromIPFS(metaList[i].ipfsLink))
+      }
+      Promise.all(pr).then(resolve)
+    })
+  })
+}
+
+exports.getClaimsCount = function (key) {
+  return new Promise(function (resolve, reject) {
+    Ethereum.getClaimsListCount(key).then(resolve)
+  })
+}
+
+/*
+console.log('NOOOOOODE TEEEEEEST')
+getClaimsListFromIpfs('0x9407ee04677edd116c67e86ffb8dbae6e4c199a692fe820ce35a27f600f90b0c').then(result => {
+  console.log('*** New ipfs test')
+  console.log(result)
+  console.log('*** End of the test')
+})
+*/

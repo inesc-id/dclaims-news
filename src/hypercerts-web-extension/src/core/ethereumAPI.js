@@ -1,64 +1,4 @@
 exports = module.exports
-/*
-const ABI = [
-  {
-    'constant': true,
-    'inputs': [
-      {
-        'name': 'articleId',
-        'type': 'bytes32'
-      }
-    ],
-    'name': 'getIpfsLink',
-    'outputs': [
-      {
-        'name': '',
-        'type': 'string'
-      }
-    ],
-    'payable': false,
-    'stateMutability': 'view',
-    'type': 'function'
-  },
-  {
-    'constant': true,
-    'inputs': [
-      {
-        'name': '',
-        'type': 'bytes32'
-      }
-    ],
-    'name': 'bigList',
-    'outputs': [
-      {
-        'name': '',
-        'type': 'string'
-      }
-    ],
-    'payable': false,
-    'stateMutability': 'view',
-    'type': 'function'
-  },
-  {
-    'constant': false,
-    'inputs': [
-      {
-        'name': 'articleId',
-        'type': 'bytes32'
-      },
-      {
-        'name': 'ipfsLink',
-        'type': 'string'
-      }
-    ],
-    'name': 'setIpfsLink',
-    'outputs': [],
-    'payable': false,
-    'stateMutability': 'nonpayable',
-    'type': 'function'
-  }
-]
-*/
 
 const ABI = [
   {
@@ -307,6 +247,19 @@ exports.getItemFromStorage = function (key) {
       if (!error) {
         console.log(result)
         resolve(result)
+      } else {
+        console.error(error)
+        reject(error)
+      }
+    })
+  })
+}
+
+exports.issueClaim = function (key, ipfsLink) {
+  return new Promise(function (resolve, reject) {
+    HypercertsInstance.issueClaim(key, ipfsLink, function (error, result) {
+      if (!error) {
+        resolve(true)
       } else {
         console.error(error)
         reject(error)
