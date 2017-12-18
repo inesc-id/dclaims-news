@@ -30,7 +30,7 @@ Hypercerts is made of three main components. Hypercerts-Web-Extension, Hypercert
 ![](https://github.com/inesc-id/hypercerts-pm/blob/master/images/hc-arch2.jpg?raw=true)
 
 ## Usage
-- Install and configure IPFS
+1. Install and configure IPFS
 ```sh
 > npm install --save ipfs-api
 # Show the ipfs config API port to check it is correct
@@ -43,9 +43,13 @@ Hypercerts is made of three main components. Hypercerts-Web-Extension, Hypercert
 # Run the daemon
 > ipfs daemon
 ```
-- [Install and configure Metamask](https://metamask.io/)
-- Download `src/hypercerts-web-extension` and install it in Chrome or Firefox.
-- Visit [https://tecnico.ulisboa.pt/en/news/](https://tecnico.ulisboa.pt/en/news/) to view claims.
-- Open a news article and to generate a claim press the `Generate Claim` button.
+2. [Install and configure Metamask](https://metamask.io/)
+3. Download `src/hypercerts-web-extension` and install it in Chrome:
+  - Go to [`chrome://extensions`]
+  - Check the `Developer Mode` box
+  - Select `Load unpacked extension...` and chose the `src/hypercerts-web-extension` directory.
+4. Download `src/hypercerts-web-extension` and install it in Chrome or Firefox.
+5. Visit [https://tecnico.ulisboa.pt/en/news/](https://tecnico.ulisboa.pt/en/news/) to view claims.
+6. Open a news article and to generate a claim press the `Generate Claim` button.
 
 [![JavaScript Style Guide](https://cdn.rawgit.com/standard/standard/master/badge.svg)](https://github.com/standard/standard)
