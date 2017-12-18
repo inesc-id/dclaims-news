@@ -60,7 +60,7 @@ exports.createClaimModal = function (funcCall) {
   html += "           <div class='modal-body'>"
   html += '             <form>'
   html += "               <div class='form-group'>"
-  html += "                 <label for='name'>ID:</label>"
+  html += "                 <label for='name' id='claim-modal-userId-label'>ID:</label>"
   html += "                 <input type='text' class='form-control' id='claim-modal-userId'>"
   html += "                 <label for='freeText'>Free Text:</label>"
   html += "                 <input type='text' class='form-control' id='claim-modal-freeText'>"
@@ -86,7 +86,7 @@ exports.createGenerateClaimButton = function (articleId) {
   var html = ''
 
   html += "            <div class='row'>"
-  html += "              <button type='button' class='btn btn-info btn-lg' data-toggle='modal' data-target='#generate-claim-modal-" + articleId + "'>Contest the Title</button>"
+  html += "              <button type='button' onclick='updateUserId()' class='btn btn-info btn-lg' data-toggle='modal' data-target='#generate-claim-modal-" + articleId + "'>Contest the Title</button>"
   html += '            </div>'
 
   return html
