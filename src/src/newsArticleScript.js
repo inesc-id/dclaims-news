@@ -51,11 +51,11 @@ function createGenerateClaimModal () {
 
 function sendMessage (claimCategory, freeText) {
   // (issuerId, articleId, category, freeText)
-  var newClaim = NewsClaims.newClaim(userId, articleId, claimCategory, freeText)
-
-  Hypercerts.handleVerification(articleId, newClaim).then(value => {
-    alert(value.toString())
-    console.log(value.toString())
+  NewsClaims.newClaim(userId, articleId, claimCategory, freeText).then(newClaim => {
+    Hypercerts.handleVerification(articleId, newClaim).then(value => {
+      alert(value.toString())
+      console.log(value.toString())
+    })
   })
 }
 
