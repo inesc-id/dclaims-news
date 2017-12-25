@@ -67,7 +67,7 @@ exports.newClaim = function (issuerId, articleId, category, freeText) {
     signMsg(msgParams, issuerAddress).then(value => {
       thisClaim.signature.type = 'eth_signTypedData',
     thisClaim.signature.creator = issuerAddress,
-    thisClaim.signature.signatureValue = value
+    thisClaim.signature.signatureValue = value.result
       resolve(thisClaim)
     })
   })
