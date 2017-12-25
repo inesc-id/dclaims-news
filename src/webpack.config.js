@@ -11,21 +11,7 @@
      path: path.resolve(__dirname, 'dist/')
 
    },
-   module: {
-     loaders: [
-       {
-         test: /\.js$/,
-         loader: 'babel-loader',
-         query: {
-           presets: ['es2015'],
-           plugins: [
-             'transform-es3-property-literals',
-             'transform-es3-member-expression-literals'
-           ]
-         }
-       }
-     ]
-   },
+
    stats: {
      colors: true
    },
