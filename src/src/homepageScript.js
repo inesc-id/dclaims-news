@@ -33,6 +33,12 @@ function displayClaimsDigest (claimBodyId, cleanList) {
       }
     }
 
+    if (!NewsClaims.verifySignature(cleanList[i])) {
+      // if bad digital signature
+      console.log('Bad signature from claim: ' + cleanList[i].id)
+      continue
+    }
+
     let st1 = '  CLAIM #' + (i + 1)
     let st2 = 'Category: \n' + cleanList[i].claim.category
     let st3 = 'User: ' + cleanList[i].issuer

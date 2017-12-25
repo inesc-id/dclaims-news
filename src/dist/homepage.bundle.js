@@ -35712,6 +35712,32 @@ var defaultClaim =
     }
   }
 
+function buildMsgParams (claim) {
+  let msgParams = [
+    {
+      type: 'string',      // Any valid solidity type
+      name: 'Issuer ID',   // Any string label you want
+      value: claim.issuer     // The value to sign
+    },
+    {
+      type: 'string',
+      name: 'Article ID',
+      value: claim.claim.id
+    },
+    {
+      type: 'string',
+      name: 'Classification',
+      value: claim.claim.category
+    },
+    {
+      type: 'string',
+      name: 'Free Text',
+      value: claim.claim.freeText
+    }
+  ]
+  return msgParams
+}
+
 exports.newClaim = function (issuerId, articleId, category, freeText) {
   return new Promise(function (resolve, reject) {
     var thisClaim = defaultClaim
@@ -35722,28 +35748,7 @@ exports.newClaim = function (issuerId, articleId, category, freeText) {
     thisClaim.claim.freeText = freeText
     thisClaim.claim.category = category
 
-    const msgParams = [
-      {
-        type: 'string',      // Any valid solidity type
-        name: 'Issuer ID',   // Any string label you want
-        value: issuerId     // The value to sign
-      },
-      {
-        type: 'string',
-        name: 'Article ID',
-        value: articleId
-      },
-      {
-        type: 'string',
-        name: 'Classification',
-        value: category
-      },
-      {
-        type: 'string',
-        name: 'Free Text',
-        value: freeText
-      }
-    ]
+    const msgParams = buildMsgParams(thisClaim)
 
     var issuerAddress = web3.eth.accounts[0]
 
@@ -35754,6 +35759,28 @@ exports.newClaim = function (issuerId, articleId, category, freeText) {
       resolve(thisClaim)
     })
   })
+}
+
+exports.verifySignature = function (claim) {
+  try {
+    const msgParams = buildMsgParams(claim)
+    const issuerId = claim.issuer
+
+    const recovered = sigUtil.recoverTypedSignature({
+      data: msgParams,
+      sig: claim.signature.signatureValue
+    })
+    if (recovered === issuerId) {
+      // alert('Recovered signer: ' + issuerId)
+      return true
+    } else {
+    // alert('Failed to verify signer')
+      return false
+    }
+  } catch (err) {
+    console.log('Error getting signature')
+    return false
+  }
 }
 
 function signMsg (msgParams, from) {
@@ -98678,6 +98705,12 @@ function displayClaimsDigest (claimBodyId, cleanList) {
       if (TRUSTLIST.indexOf(cleanList[i].issuer) == -1) {
         continue
       }
+    }
+
+    if (!__WEBPACK_IMPORTED_MODULE_2__newsClaims_js___default.a.verifySignature(cleanList[i])) {
+      // if bad digital signature
+      console.log('Bad signature from claim: ' + cleanList[i].id)
+      continue
     }
 
     let st1 = '  CLAIM #' + (i + 1)
