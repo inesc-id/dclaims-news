@@ -1,7 +1,8 @@
 import NewsParser from './hypercertsParser.js'
 import ElementsGenerator from './elementsGenerator'
 import NewsClaims from './newsClaims.js'
-import Hypercerts from 'hypercerts-core'
+// import Hypercerts from 'hypercerts-core'
+import Hypercerts from '../../../hypercerts-core/src/hc-core.js'
 import sha3 from 'solidity-sha3'
 
 var articleId = ''
@@ -66,4 +67,4 @@ window.updateUserId = function () {
   })
 }
 
-generateArticleId().then(createGenerateClaimModal).then(createGenerateClaimButton)
+Hypercerts.init(2).then(generateArticleId).then(createGenerateClaimModal).then(createGenerateClaimButton)

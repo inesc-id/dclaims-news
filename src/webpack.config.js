@@ -18,5 +18,11 @@
    externals: [{
      xmlhttprequest: '{XMLHttpRequest:XMLHttpRequest}'
    }],
-   devtool: 'source-map'
+   devtool: 'source-map',
+   node: {
+     fs: 'empty'
+   },
+   plugins: [
+     new webpack.IgnorePlugin(/solc/)
+   ]
  }
