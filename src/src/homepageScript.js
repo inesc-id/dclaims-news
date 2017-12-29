@@ -1,8 +1,8 @@
 import NewsParser from './hypercertsParser.js'
 import ElementsGenerator from './elementsGenerator'
 import NewsClaims from './newsClaims.js'
-// import Hypercerts from 'hypercerts-core'
-import Hypercerts from '../../../hypercerts-core/src/hc-core.js'
+import Hypercerts from 'hypercerts-core'
+// import Hypercerts from '../../../hypercerts-core/src/hc-core.js' // testing
 import sha3 from 'solidity-sha3'
 
 var TRUSTLIST = ['0x64810cefb991351b323e8a970cda57e07ecbad30']
