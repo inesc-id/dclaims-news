@@ -30,6 +30,7 @@ function displayClaimsDigest (claimBodyId, cleanList) {
   for (let i = 0; i < cleanList.length; i++) {
     if (TRUSTLIST_ACTIVE) {
       if (TRUSTLIST.indexOf(cleanList[i].issuer) == -1) {
+        console.log('Skipped')
         continue
       }
     }
@@ -130,4 +131,12 @@ function allElements () {
   }
 }
 
-Hypercerts.init(2).then(allElements)
+let hypercertsSetup =
+  {
+    initType: 2,
+    ipfsHost: '127.0.0.1',
+    contractAddress: '0x53abb1d321dd254eff936f0caee94effd4e10621'
+  }
+
+Hypercerts.init(hypercertsSetup).then(allElements)
+// Hypercerts.init(2).then(allElements)

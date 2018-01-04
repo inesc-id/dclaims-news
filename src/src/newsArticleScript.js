@@ -67,4 +67,12 @@ window.updateUserId = function () {
   })
 }
 
-Hypercerts.init(2).then(generateArticleId).then(createGenerateClaimModal).then(createGenerateClaimButton)
+let hypercertsSetup =
+  {
+    initType: 2,
+    ipfsHost: '127.0.0.1',
+    contractAddress: '0x53abb1d321dd254eff936f0caee94effd4e10621'
+  }
+
+Hypercerts.init(hypercertsSetup).then(generateArticleId).then(createGenerateClaimModal).then(createGenerateClaimButton)
+// Hypercerts.init(2).then(generateArticleId).then(createGenerateClaimModal).then(createGenerateClaimButton)

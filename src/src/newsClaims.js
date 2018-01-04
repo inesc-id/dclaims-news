@@ -1,33 +1,7 @@
-const uuidv4 = require('uuid/v4')
-const HYPERCERTS_NAMESPACE = 'hypercerts-news'
 const sigUtil = require('eth-sig-util')
+const HypercertsNewsClaims = require('../../../hypercerts-news-claims/src/index.js')
 
 var exports = module.exports
-
-var defaultClaim =
-  {
-    id: 'claim_id',
-    type: ['hypercerts_news_claim'],
-    issuer: 'issuer_id',
-    issued: 'yyyy-mm-dd',
-    claim: {
-      id: 'article_id',
-      category: 'one_from_the_list',
-      freeText: 'something'
-    },
-    revocation: {
-      id: 'articleId',
-      type: 'SimpleRevocationList2017'
-    },
-    signature: {
-      type: 'something',
-      created: 'timestamp',
-      creator: 'someone',
-      domain: 'something',
-      nonce: '1234',
-      signatureValue: 'signature'
-    }
-  }
 
 function buildMsgParams (claim) {
   let msgParams = [
@@ -57,13 +31,7 @@ function buildMsgParams (claim) {
 
 exports.newClaim = function (issuerId, articleId, category, freeText) {
   return new Promise(function (resolve, reject) {
-    var thisClaim = defaultClaim
-
-    thisClaim.id = HYPERCERTS_NAMESPACE + '-' + uuidv4()
-    thisClaim.issuer = issuerId
-    thisClaim.claim.id = articleId
-    thisClaim.claim.freeText = freeText
-    thisClaim.claim.category = category
+    var thisClaim = new HypercertsNewsClaims.SingleClaim(issuerId, articleId, category, freeText)
 
     const msgParams = buildMsgParams(thisClaim)
 

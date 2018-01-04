@@ -33,7 +33,7 @@
   "dependencies": {
     "eth-sig-util": "^1.4.1",
     "fs": "0.0.1-security",
-    "hypercerts-core": "^1.0.1",
+    "hypercerts-core": "^1.3.0",
     "solidity-sha3": "^0.4.1"
   }
 }
