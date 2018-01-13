@@ -13,12 +13,29 @@ function injectScript (file_path, tag) {
   node.appendChild(script)
 }
 
+const homePageDefaultValues1 = {
+  newsElementClass: 'sdc-news-story-grid__card',
+  newsTitleClass: 'sdc-news-story-grid__headline',
+  specificArticleElement: 'sdc-news-article-header__headline'
+}
+
+const homePageDefaultValues2 = {
+  newsElementClass: 'blog-article',
+  newsTitleClass: 'article-title',
+  specificArticleElement: 'main-article-content'
+}
+
 function launch () {
-  if (document.body.getElementsByClassName('main-article-content').length == 0) {
+  var homePageDefaultValues = homePageDefaultValues1
+  console.log('sas.dkjlkAJDSLkajdlaks: ' + window.location.host)
+  if (window.location.host == 'tecnico.ulisboa.pt') {
+    homePageDefaultValues = homePageDefaultValues2
+  }
+  if (document.body.getElementsByClassName(homePageDefaultValues.specificArticleElement).length == 0) {
     launchMainPage()
   }
 
-  if (document.body.getElementsByClassName('main-article-content').length == 1) {
+  if (document.body.getElementsByClassName(homePageDefaultValues.specificArticleElement).length == 1) {
     launchArticlePage()
   }
 }

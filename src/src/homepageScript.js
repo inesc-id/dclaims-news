@@ -110,10 +110,13 @@ function setBadgeCount (articleId) {
     var claimsCount = value.toString()
     console.log('Server response:    ' + claimsCount)
     document.getElementById(badgeId).innerHTML = claimsCount
+    console.timeEnd('timer-load-claims-count')
   })
 }
 
 function allElements () {
+  console.timeEnd('timer-dclaims-init')
+  console.time('timer-create-ui-elements')
   var list = NewsParser.getNewsItems(document)
 
   for (var i = 0; i < list.length; i++) {
@@ -126,17 +129,26 @@ function allElements () {
     createViewClaimsButton(articleId, list[i])
     // Modal
     createViewClaimsModals(articleId, title)
+    if (i == list.length - 1) {
+      console.timeEnd('timer-create-ui-elements')
+      console.time('timer-load-claims-count')
+      if (localStorage.getItem('RELOAD_COUNTER') > 0) {
+        localStorage.setItem('RELOAD_COUNTER', localStorage.getItem('RELOAD_COUNTER') - 1)
+        location.reload()
+      }
+    }
     // Badges
     setBadgeCount(articleId)
   }
 }
 
+// '0x53abb1d321dd254eff936f0caee94effd4e10621'
 let hypercertsSetup =
   {
     initType: 2,
     ipfsHost: '127.0.0.1',
-    contractAddress: '0x53abb1d321dd254eff936f0caee94effd4e10621'
+    contractAddress: '0xc7c75Ba99C6d2b627fD8A7f4365C8f4E78C7ae16'
   }
-
+console.time('timer-dclaims-init')
 Hypercerts.init(hypercertsSetup).then(allElements)
 // Hypercerts.init(2).then(allElements)
