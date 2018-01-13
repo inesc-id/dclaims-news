@@ -1,4 +1,4 @@
-# Hypercerts
+# DClaims-News
 
 - João Santos' M.Sc Thesis
 - Universidade de Lisboa, Instituto Superior Técnico
@@ -10,23 +10,23 @@
 Table of Contents
 =================
 
-   * [Hypercerts](#hypercerts)
+   * [DClaims](#hypercerts)
       * [Project Description](#project-description)
       * [Project Structure](#project-structure)
-         * [Hypercerts Web-Extension](#hypercerts-web-extension)
-         * [Hypercerts-Core](#hypercerts-core)
-         * [Hypercerts-Ethereum-mock](#hypercerts-ethereum-mock)
+         * [DClaims Web-Extension](#hypercerts-web-extension)
+         * [DClaims-Core](#hypercerts-core)
+         * [DClaims-Ethereum-mock](#hypercerts-ethereum-mock)
       * [Usage](#usage)
 
 ## Project Description
 
-Hypercerts is a platform that enables a truly distributed and trustless way of managing claims about News articles.
+DClaims is a platform that enables a truly distributed and trustless way of managing claims about News articles.
 Currently under development.
 
-Using the Hypercerts-Web-Extension users can generate claims  (whose authenticity and integrity can be verified by anyone without the need of a third party) about any news article, and those claims can be presented to all other users. This all happens in a distributed and trustless form, with the use of [IPFS](https://ipfs.io) and [Ethereum](https://www.ethereum.org).
+Using the DClaims-Web-Extension users can generate claims  (whose authenticity and integrity can be verified by anyone without the need of a third party) about any news article, and those claims can be presented to all other users. This all happens in a distributed and trustless form, with the use of [IPFS](https://ipfs.io) and [Ethereum](https://www.ethereum.org).
 
 ## Project Structure
-Hypercerts is made of three main components. Hypercerts-Web-Extension, Hypercerts-Core and Hypercerts-Ethereum.
+DClaims is made of three main components. DClaims-Web-Extension, DClaims-Core and DClaims-Ethereum.
 
 ## Usage
 #### 1. Install and configure IPFS
