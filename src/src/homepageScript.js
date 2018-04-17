@@ -11,7 +11,7 @@ var TRUSTLIST_ACTIVE = false
 
 var TESTING = true
 
-const CONTRACT_ADDRESS = '0xF2F2f7C36fbBA17ad8a28a4680a7059B44C4B626'
+const CONTRACT_ADDRESS = '0xfa66a818D2e537F4A861b71a435CfBB1B5A2BdF2'
 
 window.articleIds = []
 
@@ -19,14 +19,22 @@ var INIT_RELOAD_COUNT = 0
 // var RELOAD_COUNT = localStorage.getItem('reload-counter')
 var RELOAD_COUNT = 0
 
+var loaded = []
+
 function clickClaims (articleId) {
+  // checks if the page has already loaded the items. If it has,
+  // it does not request the stuff again
+  if (loaded.indexOf(articleId) != -1) {
+    console.log('Already loaded, refresh page to get latest')
+    return
+  }
+  loaded.push(articleId)
   console.log('Opened claims')
   var claimBodyId = 'modal-claim-body-' + articleId
   document.getElementById(claimBodyId).innerHTML = "There are no claims about this article's title yet. Open the article and be the first!"
   window.performance.mark('timer-get-claims-ipfs-start' + articleId.substring(1, 5))
   Hypercerts.getClaimsJSONByUrl(articleId).then(value => {
     var claims = value
-
     var cleanList = claims['claimsList']
     window.performance.mark('timer-get-claims-ipfs-end' + articleId.substring(1, 5))
     window.performance.measure('home-timer-get-claims-ipfs-' + articleId.substring(1, 5) + 'len-' + cleanList.length, 'timer-get-claims-ipfs-start' + articleId.substring(1, 5), 'timer-get-claims-ipfs-end' + articleId.substring(1, 5))

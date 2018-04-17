@@ -8,7 +8,7 @@ import sha3 from 'solidity-sha3'
 var articleId = ''
 var userId = null
 
-const CONTRACT_ADDRESS = '0xF2F2f7C36fbBA17ad8a28a4680a7059B44C4B626'
+const CONTRACT_ADDRESS = '0xfa66a818D2e537F4A861b71a435CfBB1B5A2BdF2'
 
 function setUserId (id) {
   userId = id
