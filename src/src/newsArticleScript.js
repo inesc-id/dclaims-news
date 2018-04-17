@@ -1,12 +1,14 @@
 import NewsParser from './hypercertsParser.js'
 import ElementsGenerator from './elementsGenerator'
 import NewsClaims from './newsClaims.js'
-import Hypercerts from 'hypercerts-core'
-// import Hypercerts from '../../../hypercerts-core/src/hc-core.js' // testing
+// import Hypercerts from 'hypercerts-core'
+import Hypercerts from '../../../hypercerts-core/src/hc-core.js' // testing
 import sha3 from 'solidity-sha3'
 
 var articleId = ''
 var userId = null
+
+const CONTRACT_ADDRESS = '0xF2F2f7C36fbBA17ad8a28a4680a7059B44C4B626'
 
 function setUserId (id) {
   userId = id
@@ -53,10 +55,23 @@ function createGenerateClaimModal () {
 function sendMessage (claimCategory, freeText) {
   // (issuerId, articleId, category, freeText)
   NewsClaims.newClaim(userId, articleId, claimCategory, freeText).then(newClaim => {
-    Hypercerts.handleVerification(articleId, newClaim).then(value => {
-      alert(value.toString())
-      console.log(value.toString())
-    })
+    window.performance.mark('news-timer-issue-claim-manual-start')
+    if (document.getElementById('switch').checked) {
+      Hypercerts.issueWithPublisher(articleId, newClaim).then(value => {
+        // alert(value.toString())
+        // console.log(value.toString())
+        window.performance.mark('news-timer-issue-claim-manual-end')
+        window.performance.measure('news-timer-issue-claim-manual', 'news-timer-issue-claim-manual-start', 'news-timer-issue-claim-manual-end')
+      })
+    } else {
+      Hypercerts.handleVerification(articleId, newClaim).then(value => {
+        alert(value.toString())
+        console.log(value.toString())
+        window.performance.mark('news-timer-issue-claim-manual-end')
+        window.performance.measure('news-timer-issue-claim-manual', 'news-timer-issue-claim-manual-start', 'news-timer-issue-claim-manual-end')
+      }
+  )
+    }
   })
 }
 
@@ -71,7 +86,7 @@ let hypercertsSetup =
   {
     initType: 2,
     ipfsHost: '127.0.0.1',
-    contractAddress: '0xc7c75Ba99C6d2b627fD8A7f4365C8f4E78C7ae16'
+    contractAddress: CONTRACT_ADDRESS
   }
 
 Hypercerts.init(hypercertsSetup).then(generateArticleId).then(createGenerateClaimModal).then(createGenerateClaimButton)

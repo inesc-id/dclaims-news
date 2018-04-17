@@ -61,16 +61,17 @@ exports.createClaimModal = function (funcCall) {
   html += '             <form>'
   html += "               <div class='form-group'>"
   html += "                 <label for='name' id='claim-modal-userId-label'>ID:</label>"
-  html += "                 <input type='text' class='form-control' id='claim-modal-userId'>"
+  // html += "                 <input type='text' class='form-control' id='claim-modal-userId'>"
   html += "                 <label for='freeText'>Free Text:</label>"
   html += "                 <input type='text' class='form-control' id='claim-modal-freeText'>"
+  html += ' <label class="switch" > <input id="switch" type="checkbox"> <span class="slider round"></span> </label>'
   html += "                 <div class='styled-select slate'>"
   html += '                   <select id ="claim">'
   html += claimsCategoriesHTML()
   html += '                   </select'
   html += '                 </div>'
   html += '               </div>'
-  html += "               <button type='button' class='btn btn-default' onclick=" + funcCall + '>Submit</button>'
+  html += "               <button type='button' class='btn btn-default' data-dismiss='modal' onclick=" + funcCall + '>Submit</button>'
   html += "               <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>"
   html += '             </form>'
   html += '           </div>'

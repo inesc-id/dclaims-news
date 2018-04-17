@@ -25,12 +25,28 @@ const homePageDefaultValues2 = {
   specificArticleElement: 'main-article-content'
 }
 
+const homePageDefaultValues3 = {
+  newsElementClass: 'story',
+  newsTitleClass: 'story-heading',
+  specificArticleElement: 'theme-main'
+}
+
 function launch () {
   var homePageDefaultValues = homePageDefaultValues1
   console.log('sas.dkjlkAJDSLkajdlaks: ' + window.location.host)
   if (window.location.host == 'tecnico.ulisboa.pt') {
     homePageDefaultValues = homePageDefaultValues2
   }
+
+  if (window.location.host == 'turbina.gsd.inesc-id.pt:8765') {
+    homePageDefaultValues = homePageDefaultValues2
+    // console.log('TECNICO!!')
+  }
+
+  if (window.location.host == 'www.nytimes.com') {
+    homePageDefaultValues = homePageDefaultValues3
+  }
+
   if (document.body.getElementsByClassName(homePageDefaultValues.specificArticleElement).length == 0) {
     launchMainPage()
   }

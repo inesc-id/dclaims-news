@@ -1,23 +1,35 @@
 import NewsParser from './hypercertsParser.js'
 import ElementsGenerator from './elementsGenerator'
 import NewsClaims from './newsClaims.js'
-import Hypercerts from 'hypercerts-core'
-// import Hypercerts from '../../../hypercerts-core/src/hc-core.js' // testing
+// import Hypercerts from 'hypercerts-core'
+import Hypercerts from '../../../hypercerts-core/src/hc-core.js' // testing
 import sha3 from 'solidity-sha3'
 
-var TRUSTLIST = ['0x64810cefb991351b323e8a970cda57e07ecbad30']
+var TRUSTLIST = ['0x64810cefb991351b323e8a970cda57e07ecbad30', '0x3296C51BC98DD4dCd5605469EC3A736c0E60ef43']
 
-var TRUSTLIST_ACTIVE = true
+var TRUSTLIST_ACTIVE = false
+
+var TESTING = true
+
+const CONTRACT_ADDRESS = '0xF2F2f7C36fbBA17ad8a28a4680a7059B44C4B626'
+
+window.articleIds = []
+
+var INIT_RELOAD_COUNT = 0
+// var RELOAD_COUNT = localStorage.getItem('reload-counter')
+var RELOAD_COUNT = 0
 
 function clickClaims (articleId) {
   console.log('Opened claims')
   var claimBodyId = 'modal-claim-body-' + articleId
   document.getElementById(claimBodyId).innerHTML = "There are no claims about this article's title yet. Open the article and be the first!"
-
+  window.performance.mark('timer-get-claims-ipfs-start' + articleId.substring(1, 5))
   Hypercerts.getClaimsJSONByUrl(articleId).then(value => {
     var claims = value
 
     var cleanList = claims['claimsList']
+    window.performance.mark('timer-get-claims-ipfs-end' + articleId.substring(1, 5))
+    window.performance.measure('home-timer-get-claims-ipfs-' + articleId.substring(1, 5) + 'len-' + cleanList.length, 'timer-get-claims-ipfs-start' + articleId.substring(1, 5), 'timer-get-claims-ipfs-end' + articleId.substring(1, 5))
     displayClaimsDigest(claimBodyId, cleanList)
   })
 }
@@ -34,18 +46,21 @@ function displayClaimsDigest (claimBodyId, cleanList) {
         continue
       }
     }
-
+/*
     if (!NewsClaims.verifySignature(cleanList[i])) {
       // if bad digital signature
       console.log('Bad signature from claim: ' + cleanList[i].id)
       continue
     }
+    */
 
     let st1 = '  CLAIM #' + (i + 1)
     let st2 = 'Category: \n' + cleanList[i].claim.category
+    // let st4 = 'Comment: \n' + cleanList[i].claim.freeText
     let st3 = 'User: ' + cleanList[i].issuer
 
     txt += '<p class="claimtitle">' + st1 + '</p>' + '<p class="claimbody">' + st2 + '</p>' + '<p class="claimuser">' + st3 + '</p>'
+    // txt += '<p class="claimtitle">' + st1 + '</p>' + '<p class="claimbody">' + st2 + '</p>' + '<p class="claimbody">' + st4 + '</p>' + '<p class="claimuser">' + st3 + '</p>'
   }
   txt += '</div>'
   document.getElementById(claimBodyId).innerHTML = txt
@@ -106,39 +121,62 @@ function createViewClaimsModals (articleId, title) {
 function setBadgeCount (articleId) {
   var badgeId = 'span-button-' + articleId
 
+  window.performance.mark('timer-load-claims-count-start' + articleId.substring(1, 5))
+
   Hypercerts.getClaimsCountsJSONByUrl(articleId).then(value => {
     var claimsCount = value.toString()
     console.log('Server response:    ' + claimsCount)
     document.getElementById(badgeId).innerHTML = claimsCount
-    console.timeEnd('timer-load-claims-count')
+    window.performance.mark('timer-load-claims-count-end' + articleId.substring(1, 5))
+    window.performance.measure('home-timer-load-claims-count-' + articleId.substring(1, 5), 'timer-load-claims-count-start' + articleId.substring(1, 5), 'timer-load-claims-count-end' + articleId.substring(1, 5))
   })
 }
 
 function allElements () {
-  console.timeEnd('timer-dclaims-init')
-  console.time('timer-create-ui-elements')
+  window.performance.mark('timer-dclaims-init-end')
+  window.performance.measure('home-timer-dclaims-init', 'timer-dclaims-init-start', 'timer-dclaims-init-end')
+  window.performance.mark('timer-create-ui-elements-start')
+
   var list = NewsParser.getNewsItems(document)
 
   for (var i = 0; i < list.length; i++) {
-    var title = NewsParser.getTitleElement(list[i])
-
-    var strippedTitle = NewsParser.cleanTitle(title)
-    var articleId = sha3(strippedTitle)
+    try {
+      var title = NewsParser.getTitleElement(list[i])
+      var strippedTitle = NewsParser.cleanTitle(title)
+      var articleId = sha3(strippedTitle)
+    } catch (err) {
+      console.log('Error getting title, probably not a news article.  - ' + err)
+      continue
+    }
+    window.articleIds.push(articleId)
 
     // Buttons
     createViewClaimsButton(articleId, list[i])
     // Modal
     createViewClaimsModals(articleId, title)
-    if (i == list.length - 1) {
-      console.timeEnd('timer-create-ui-elements')
-      console.time('timer-load-claims-count')
-      if (localStorage.getItem('RELOAD_COUNTER') > 0) {
-        localStorage.setItem('RELOAD_COUNTER', localStorage.getItem('RELOAD_COUNTER') - 1)
-        location.reload()
-      }
-    }
+
     // Badges
     setBadgeCount(articleId)
+  }
+
+  window.performance.mark('timer-create-ui-elements-end')
+  window.performance.measure('home-timer-create-ui-elements', 'timer-create-ui-elements-start', 'timer-create-ui-elements-end')
+
+  if (RELOAD_COUNT == INIT_RELOAD_COUNT && RELOAD_COUNT > 0) {
+    let bla = ['tests']
+    bla = JSON.stringify(bla)
+    localStorage.setItem('measures', bla)
+  }
+
+  if (RELOAD_COUNT > 0) {
+    var items = []
+    items.push(window.performance.getEntriesByType('measure'))
+    var allItems = JSON.parse(localStorage.getItem('measures'))
+    var newItems = allItems.concat(items)
+    var newItemsJson = JSON.stringify(newItems)
+    localStorage.setItem('measures', newItemsJson)
+    localStorage.setItem('reload-counter', localStorage.getItem('reload-counter') - 1)
+    location.reload()
   }
 }
 
@@ -147,8 +185,51 @@ let hypercertsSetup =
   {
     initType: 2,
     ipfsHost: '127.0.0.1',
-    contractAddress: '0xc7c75Ba99C6d2b627fD8A7f4365C8f4E78C7ae16'
+    contractAddress: CONTRACT_ADDRESS
   }
-console.time('timer-dclaims-init')
+window.performance.mark('timer-dclaims-init-start')
 Hypercerts.init(hypercertsSetup).then(allElements)
 // Hypercerts.init(2).then(allElements)
+
+/*
+window.getAllClaims = function () {
+  var list = NewsParser.getNewsItems(document)
+
+  for (var i = 0; i < list.length; i++) {
+    var title = NewsParser.getTitleElement(list[i])
+    var strippedTitle = NewsParser.cleanTitle(title)
+    var articleId = sha3(strippedTitle)
+
+    clickClaims(articleId)
+  }
+}
+*/
+
+function sleep (ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+window.getAllClaims = async function () {
+  var list = NewsParser.getNewsItems(document)
+
+  for (var i = 0; i < list.length; i++) {
+    var title = NewsParser.getTitleElement(list[i])
+    var strippedTitle = NewsParser.cleanTitle(title)
+    var articleId = sha3(strippedTitle)
+    // clickClaims(articleId)
+    window.performance.mark('timer-get-claims-ipfs-start' + articleId.substring(1, 5))
+    Hypercerts.getClaimsJSONByUrl(articleId).then(value => {
+      var claims = value
+      var cleanList = claims['claimsList']
+      window.performance.mark('timer-get-claims-ipfs-end' + articleId.substring(1, 5))
+      window.performance.measure('home-timer-get-claims-ipfs-' + articleId.substring(1, 5) + 'len-' + cleanList.length, 'timer-get-claims-ipfs-start' + articleId.substring(1, 5), 'timer-get-claims-ipfs-end' + articleId.substring(1, 5))
+    })
+    await sleep(5000)
+  }
+}
+
+/*
+Instructions for tests, run in the browser
+localStorage.removeItem('measures')
+localStorage.setItem('reload-counter',20)
+*/
