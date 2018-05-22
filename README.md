@@ -16,6 +16,7 @@ Table of Contents
          * [DClaims Web-Extension](#hypercerts-web-extension)
          * [DClaims-Core](#hypercerts-core)
          * [DClaims-Ethereum-mock](#hypercerts-ethereum-mock)
+      * [Installation](#installation)
       * [Usage](#usage)
 
 ## Project Description
@@ -28,7 +29,7 @@ Using the DClaims-Web-Extension users can generate claims  (whose authenticity a
 ## Project Structure
 DClaims is made of three main components. DClaims-Web-Extension, DClaims-Core and DClaims-Ethereum.
 
-## Usage
+## Installation
 #### 1. Install and configure IPFS
 ```sh
 > npm install --save ipfs-api
@@ -51,5 +52,9 @@ DClaims is made of three main components. DClaims-Web-Extension, DClaims-Core an
   
 #### 4. Visit [https://tecnico.ulisboa.pt/en/news/](https://tecnico.ulisboa.pt/en/news/) to view claims.
 #### 5. Open a news article and to generate a claim press the `Generate Claim` button.
+
+## Usage
+
+![](https://github.com/inesc-id/dclaims-news/blob/master/images/dclaims-news-usage.jpg?raw=true)
 
 [![JavaScript Style Guide](https://cdn.rawgit.com/standard/standard/master/badge.svg)](https://github.com/standard/standard)
