@@ -43,14 +43,13 @@ DClaims is made of three main components. DClaims-Web-Extension, DClaims-Core an
 > ipfs daemon
 ```
 #### 2. [Install and configure Metamask](https://metamask.io/)
-#### 3. Download `src/hypercerts-web-extension` and install it in Chrome:
+#### 3. Download `dclaims-news/src/dist` and install it in Chrome:
 
 - Go to [`chrome://extensions`]
 - Check the `Developer Mode` box
-- Select `Load unpacked extension...` and chose the `src/hypercerts-web-extension` directory.
+- Select `Load unpacked extension...` and chose the `dclaims-news/src/dist` directory.
   
-#### 4. Download `src/hypercerts-web-extension` and install it in Chrome or Firefox.
-#### 5. Visit [https://tecnico.ulisboa.pt/en/news/](https://tecnico.ulisboa.pt/en/news/) to view claims.
-#### 6. Open a news article and to generate a claim press the `Generate Claim` button.
+#### 4. Visit [https://tecnico.ulisboa.pt/en/news/](https://tecnico.ulisboa.pt/en/news/) to view claims.
+#### 5. Open a news article and to generate a claim press the `Generate Claim` button.
 
 [![JavaScript Style Guide](https://cdn.rawgit.com/standard/standard/master/badge.svg)](https://github.com/standard/standard)
